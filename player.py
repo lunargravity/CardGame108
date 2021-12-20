@@ -3,7 +3,7 @@
 from deck import buildDeck
 
 class Player:
-    def __init__(self, name, isPlayer, deck):
+    def __init__(self, name = "Unknown Player", isPlayer = True, deck = None):
         player = name.upper()
         self.name = player
         self.hand = []
