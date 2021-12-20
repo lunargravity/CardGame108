@@ -2,8 +2,8 @@
 
 class Card:
     def __init__(self, suit, face, ability=None):
-        self.suit = ["♥♦♣♠"][suit]
-        self.face = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"][face]
+        self.suit = "♥♦♣♠"[suit]
+        self.face = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"][face-1]
         self.ability = ability
 
     def points(self):
