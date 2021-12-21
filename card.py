@@ -28,6 +28,12 @@ class Card:
     else:
         self.ability = None
 
+    def check_suit():
+        return self.suit
+
+    def check_face():
+        return self.face
+
     def display_card(self):
         print("{self.suit}{self.face}")
 
