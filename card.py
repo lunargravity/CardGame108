@@ -19,6 +19,15 @@ class Card:
         else:
             self.points = int(self.face)
 
+    if self.face == "Q":
+        self.ability = "add any card"
+    elif self.face == "7":
+        self.ability = "+7"
+    elif self.face == "A":
+        self.ability = "skip"
+    else:
+        self.ability = None
+
     def display_card(self):
         print("{self.suit}{self.face}")
 
