@@ -1,6 +1,7 @@
 #Player Class
 
 from deck import buildDeck
+from card import Card
 
 class Player:
     def __init__(self, name = "Player", isPlayer = True, deck = None):
@@ -21,12 +22,18 @@ class Player:
             self.points += card.points
         return self.points
 
+    def play_card(self):
+        pass
+
     def show(self):
+        hand = ""
         if self.isPlayer:
             print("{name}'s cards: ").format(name=self.name)
-            for cards in self.hand:
-                cards.display_hand()
+            for card in self.hand:
+                hand += "|" + str(display_card(card))
         else:
             print("Computer's cards: ")
-            print(str(len(self.hand)))
+            print(str(len(self.hand)) + " cards")
+
+
 
