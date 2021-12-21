@@ -3,15 +3,15 @@
 from deck import buildDeck
 
 class Player:
-    def __init__(self, name = "Unknown Player", isPlayer = True, deck = None):
-        player = name.upper()
+    def __init__(self, name = "Player", isPlayer = True, deck = None):
+        player = name.title()
         self.name = player
         self.hand = []
         self.isPlayer = isPlayer
         self.deck = deck
         self.points = 0
 
-    def draw(self, times):
+    def draw_card(self, times = 1):
         self.hand.extend(self.deck.draw(times))
 
     def check_points(self):
@@ -24,10 +24,9 @@ class Player:
     def show(self):
         if self.isPlayer:
             print("{name}'s cards: ").format(name=self.name)
+            for cards in self.hand:
+                cards.display_hand()
         else:
-            print("Computer's cards:")
+            print("Computer's cards: ")
+            print(str(len(self.hand)))
 
-        for cards in self.hand:
-            cards.show()
-
-        print("Score: " + str(self.points))
