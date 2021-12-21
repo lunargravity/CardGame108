@@ -16,5 +16,3 @@ class Game:
         self.player.show()
         self.computer.show()
 
-newgame = Game()
-newgame.start
