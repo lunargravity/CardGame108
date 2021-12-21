@@ -2,7 +2,8 @@
 
 class Card:
     def __init__(self, suit, face, ability=None):
-        self.suit = "♥♦♣♠"[suit]
+        self.suit = ["S", "D", "C", "H"][suit]
+        #S for spades, D for diamonds, C for clubs, H for hearts
         self.face = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"][face-1]
         self.ability = ability
 
@@ -18,13 +19,6 @@ class Card:
         else:
             self.points = int(self.face)
 
-    def show(self):
-        print('┌───────┐')
-        print(f'| {self.face:<2}    |')
-        print('|       |')
-        print(f'|   {self.suit}   |')
-        print('|       |')
-        print(f'|    {self.face:>2} |')
-        print('└───────┘') 
+    def display_card(self):
+        print("{self.suit}{self.face}")
 
-        #don't forget abilities
