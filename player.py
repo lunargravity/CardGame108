@@ -5,7 +5,7 @@ from card import Card
 
 class Player:
     def __init__(self, name):
-        self.name = name
+        self.name = name.title()
         self.hand = []
 
     def draw(self, deck, times=1):
@@ -14,13 +14,16 @@ class Player:
         return self
 
     def show(self):
+        hand = ""
+        print("{name}'s cards:".format(name=self.name))
         for card in self.hand:
-            card.show()
+            hand += "|" + str(card.show()) + "|"
+        print(hand)
 
-#deck = buildDeck()
-#deck.shuffle()
-#tester = Player("dummy")
-#tester.draw(deck)
-#tester.show()
+deck = buildDeck()
+deck.shuffle()
+tester = Player("dummy")
+tester.draw(deck, 5)
+tester.show()
 
 
