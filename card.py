@@ -37,7 +37,7 @@ class Card:
         print(self.ability)
 
     def show(self):
-        print("{}{}".format(self.suit, self.face))
+        return "{}{}".format(self.suit, self.face)
 
 #test = Card("S", "Q")
 #test.show()

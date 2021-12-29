@@ -20,6 +20,7 @@ class buildDeck:
         for i in range(len(self.deck)-1, 0, -1):
             r = random.randint(0, i)
             self.deck[i], self.deck[r] = self.deck[r], self.deck[i]
+        return self.deck
 
     def show(self):
         for card in self.deck:
