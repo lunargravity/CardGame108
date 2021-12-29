@@ -25,10 +25,11 @@ class buildDeck:
         for card in self.deck:
             card.show()
 
-    def draw(self):
-        return self.hand.pop()
+    def draw(self, times=1):
+        for i in range(times):
+            return self.deck.pop()
 
 
-test = buildDeck()
-test.shuffle()
-test.show()
+#test = buildDeck()
+#test.shuffle()
+#test.show()
