@@ -3,31 +3,32 @@
 import random
 #Deck class
 
+import random
 from card import Card
 
 class buildDeck:
     def __init__(self):
         self.deck = []
+        self.generate()
 
     def generate(self):
-        for face in range(1, 14):
-            for suit in range(4):
+        for suit in ["S", "C", "D", "H"]:
+            for face in ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]:
                 self.deck.append(Card(suit, face))
-    
-    def draw(self, times):
-        cards = []
-        if times < len(self.deck):
-            for num in range(times):
-                card = random.choice(self.deck)
-                self.deck.pop(card)
-                cards.append(card)
-            return cards
-        else:
-            new_deck = generate()
-            self.deck.append(new_deck)
-            self.deck = list(set(self.deck))
-            for num in range(times):
-                card = random.choice(self.deck)
-                self.deck.pop(card)
-                cards.append(card)
-            return cards
+
+    def shuffle(self):
+        for i in range(len(self.deck)-1, 0, -1):
+            r = random.randint(0, i)
+            self.deck[i], self.deck[r] = self.deck[r], self.deck[i]
+
+    def show(self):
+        for card in self.deck:
+            card.show()
+
+    def draw(self):
+        return self.hand.pop()
+
+
+test = buildDeck()
+test.shuffle()
+test.show()
