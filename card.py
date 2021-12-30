@@ -31,10 +31,10 @@ class Card:
             self.points = int(self.face)
 
     def check_points(self):
-        print(self.points)
+        return self.points
 
     def check_ability(self):
-        print(self.ability)
+        return self.ability
 
     def show(self):
         return "{}{}".format(self.suit, self.face)
