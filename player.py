@@ -2,7 +2,7 @@
 
 from deck import buildDeck
 from card import Card
-from main import *
+from main import*
 
 class Player:
     def __init__(self, name, brain = "CPU"):
@@ -29,6 +29,17 @@ class Player:
     def clear_hand(self):
         self.hand = []
 
+    def queen(card):
+        wild = input("Add a card: ").upper()
+            if check_wild(wild) == True:
+                self.hand.remove(wild)
+                discard.append(wild)
+                self.show()
+                print("Current card: " + str(discard[-1].show()))
+            else:
+                print("You cannot play a special card on top of a Queen. Play a different card.")
+                queen()
+
     def action(self, discard):
         action = input("Action: ").upper()
         if len(action) > 1:
@@ -39,12 +50,20 @@ class Player:
                 if check_played(chosen, discard[-1]) == True:
                     #Checking if it is a queen
                     if chosen.face == "Q":
-                        pass
-
-                    self.hand.remove(chosen)
-                    discard.append(chosen)
-                    self.show()
-                    print("Current card: " + str(discard[-1].show()))
+                        self.hand.remove(chosen)
+                        discard.append(chosen)
+                        self.show()
+                        queen()
+                    elif chosen.face == "7":
+                        print("Next player draws 7 cards.")
+                    elif chosen.face == "A":
+                        print("Next player is skipped")
+                    else:
+                        #If it is not a special card
+                        self.hand.remove(chosen)
+                        discard.append(chosen)
+                        self.show()
+                        print("Current card: " + str(discard[-1].show()))              
                 else:
                     print("You cannot play that. Try again. Match the suit or face.")
                     self.action(discard)

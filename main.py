@@ -1,9 +1,8 @@
 #Main file
 
 from deck import buildDeck
-from player import *
+from player import*
 from sys import exit
-from collections import deque
 
 def help():
     """
@@ -31,6 +30,7 @@ def check_played(card, current):
     Checks the validity of the playing card by seeing if it matches the suit or face.
     """
     if card.face == "Q":
+        #Might want to add 7 and A to this
         return True
     elif card.suit == current.suit:
         return True
