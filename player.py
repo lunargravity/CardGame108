@@ -2,11 +2,13 @@
 
 from deck import buildDeck
 from card import Card
+from main import *
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, brain = "CPU"):
         self.name = name
         self.hand = []
+        self.brain = brain
         self.score = 0
 
     def draw(self, deck, times=1):
@@ -27,16 +29,18 @@ class Player:
     def clear_hand(self):
         self.hand = []
 
-    def action(self):
+    def action(self, discard):
         action = input("Action: ").upper()
         for card in self.hand:
-            if card.show() == action:
+            if check_played(card, discard[-1]) == True:
                 self.hand.remove(card)
+                discard.append(card)
                 self.show()
+                print("Current Card: " + str(discard[-1].show()))
                 break
             else:
                 if action == "D":
-                    self.draw(deck, 1)
+                    print(self.draw(deck))
                     self.show()
                     break
                 elif action == "P":
@@ -48,7 +52,7 @@ class Player:
                     break
                 else:
                     print("Invalid action")
-                    self.action()   
+                    self.action(discard)   
                     break
 
     def show(self):
@@ -92,7 +96,8 @@ class Player:
             try:
                 cpu_play()
             except:
-                self.next()
+                print("Passes to next player")
+                #Make it pass to next player
 
     def cpu_show(self):
         print("{name}'s cards: {num}".format(name=self.name, num=int(len(self.hand))))
@@ -110,8 +115,8 @@ def status():
     print(s)
 
 
-#deck = buildDeck()
-#deck.shuffle()
-#tester = Player("bob", True)
-#tester.draw(deck, 5)
-#tester.show()
+deck = buildDeck()
+deck.shuffle()
+tester = Player("bob", True)
+tester.draw(deck, 5)
+#tester.show() 
