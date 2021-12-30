@@ -26,15 +26,15 @@ def valid_start_card(card):
     else:
         return True
 
-def check_played(card, current_card):
+def check_played(card, current):
     """
     Checks the validity of the playing card by seeing if it matches the suit or face.
     """
-    if card.check_face == "Q":
+    if card.face == "Q":
         return True
-    elif card.check_suit == current_card.check_suit:
+    elif card.suit == current.suit:
         return True
-    elif card.check_face == current_card.check_face:
+    elif card.face == current.face:
         return True
     else:
         return False
@@ -70,7 +70,9 @@ if __name__ == "__main__":
     print(help())
 
     #Flipping the first card
-    
+    discard = []
+    discard.append(deck.draw())
+    print("Current Card: " + str(discard[-1].show()))
 
     #Flags
     round_over = False
@@ -85,7 +87,7 @@ if __name__ == "__main__":
     while not game_over:
         for player in players:
             if player.brain == "Human":
-                user.action()
+                user.action(discard)
             else:
                 player.cpu_action()
 
