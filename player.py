@@ -5,7 +5,7 @@ from card import Card
 
 class Player:
     def __init__(self, name):
-        self.name = name.title()
+        self.name = name
         self.hand = []
         self.score = 0
 
@@ -58,12 +58,6 @@ class Player:
             hand += "|" + str(card.show()) + "|"
         print(hand)
 
-class CPU(Player):
-    def __init__(self, name = "CPU"):
-        self.name = name
-        self.hand = []
-        self.score = 0
-
     def cpu_play(hand, current_card, status):
         """
         The logic behind the cpu when playing.
@@ -90,7 +84,7 @@ class CPU(Player):
         else:
             return choice
 
-    def action(self):
+    def cpu_action(self):
         try:
             cpu_play()
         except:
@@ -100,7 +94,7 @@ class CPU(Player):
             except:
                 self.next()
 
-    def show(self):
+    def cpu_show(self):
         print("{name}'s cards: {num}".format(name=self.name, num=int(len(self.hand))))
 
 #Status Message
@@ -111,6 +105,13 @@ def status():
     s += ("| Your Score: {ysco}\n").format(ysco=user.check_score())
     s += ("| CPU Score: \n")
     for i in range(1, int(num_cpu) + 1):
-        s += ("| CPU " + str(i) + ": " + str(CPU("CPU " + str(i)).check_score()))
+        s += ("| CPU " + str(i) + ": " + str(Player("CPU " + str(i)).check_score()))
     s += ("+---------------------------------------------------------------+\n")
     print(s)
+
+
+#deck = buildDeck()
+#deck.shuffle()
+#tester = Player("bob", True)
+#tester.draw(deck, 5)
+#tester.show()
