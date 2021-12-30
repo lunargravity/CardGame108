@@ -39,6 +39,17 @@ def check_played(card, current):
     else:
         return False
 
+def check_wild(card):
+    """
+    To make sure no one plays a special card after a wild one.
+    """
+    if card.face == "7":
+        return False
+    elif card.face == "A":
+        return False
+    else:
+        return True
+
 #When game starts
 if __name__ == "__main__":
 
