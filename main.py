@@ -83,13 +83,11 @@ if __name__ == "__main__":
     players = [user]
     for i in range(1, int(num_cpu) + 1):
         players.append(cpus[i])
-
-    while not game_over:
-        for player in players:
-            if player.brain == "Human":
-                user.action(discard)
-            else:
-                player.cpu_action()
-
+    
+    user.action(discard)
+    user.action(discard)
+    user.action(discard)
+    user.action(discard)
+    user.action(discard)
 
 
