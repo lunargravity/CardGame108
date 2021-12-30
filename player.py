@@ -31,29 +31,26 @@ class Player:
 
     def action(self, discard):
         action = input("Action: ").upper()
-        for card in self.hand:
-            if check_played(card, discard[-1]) == True:
-                self.hand.remove(card)
-                discard.append(card)
-                self.show()
-                print("Current Card: " + str(discard[-1].show()))
-                break
-            else:
-                if action == "D":
-                    print(self.draw(deck))
+        if len(action) > 1:
+            #Checking to see if user played a card, not a command
+            chosen = Card(action[0], action[1:])
+            #Turning their input into a card object
+            if chosen in self.hand:
+                if check_played(chosen, discard[-1]) == True:
+                    #Checking if it is a queen
+                    if chosen.face == "Q":
+                        pass
+
+                    self.hand.remove(chosen)
+                    discard.append(chosen)
                     self.show()
-                    break
-                elif action == "P":
-                    #Make it the next player's turn
-                    print("passes to next player")
-                    break
-                elif action == "S":
-                    status()
-                    break
+                    print("Current card: " + str(discard[-1].show()))
                 else:
-                    print("Invalid action")
-                    self.action(discard)   
-                    break
+                    print("You cannot play that. Try again. Match the suit or face.")
+                    self.action(discard)
+            else:
+                print("You do not have that card. Try again.")
+                self.action(discard)
 
     def show(self):
         hand = ""
