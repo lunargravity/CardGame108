@@ -21,7 +21,7 @@ def valid_start_card(card):
     """
     Makes sure the starting card isn't a special card, thus can be played properly.
     """
-    if card.check_face == "Q" or card.check_face == "7" or card.check_face == "A":
+    if card.face == "Q" or card.face == "7" or card.face == "A":
         return False
     else:
         return True
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     #Player and CPU Storage
     cpus = {}
     player_name = input("Enter your name: ").title()
-    user = Player(player_name, "Human")
+    user = Player(player_name, brain = "Human")
     num_cpu = input("Number of CPU players (1-4): ")
     if 1 <= int(num_cpu) <= 4:
         for i in range(1, int(num_cpu) + 1):
@@ -82,8 +82,13 @@ if __name__ == "__main__":
 
     #Flipping the first card
     discard = []
-    discard.append(deck.draw())
-    print("Current Card: " + str(discard[-1].show()))
+    first = deck.draw()
+    while valid_start_card(first) == False:
+        first = deck.draw()
+    else:
+
+        discard.append(first)
+        print("Current Card: " + str(discard[-1].show()))
 
     #Flags
     round_over = False
@@ -91,12 +96,16 @@ if __name__ == "__main__":
     skipped = False
 
     #Players List to keep track of turns
-    players = [user]
+    player_order = [user]
     for i in range(1, int(num_cpu) + 1):
-        players.append(cpus[i])
+        player_order.append(cpus[i])
     
-    user.action(deck, discard)
-    user.action(deck, discard)
-    user.action(deck, discard)
+    #for player in player_order:
+    #    player.add_points()
+    #    print(player.score)
 
+    user.action(deck, discard)
+    user.action(deck, discard)
+    user.action(deck, discard)
+    user.action(deck, discard)
 
