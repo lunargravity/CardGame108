@@ -55,10 +55,12 @@ def queen():
     The special ability of a queen card to add an additional card to the pile.
     """
     wild = input("Add a card: ").upper()
+    for card in player.hand:
+        if card.show() == wild:
+            wild = card
     if check_wild(wild) == False:
         player.hand.remove(wild)
         discard.append(wild)
-        self.show()
         print("Current card: " + str(discard[-1].show()))
         pass
     else:
@@ -79,7 +81,6 @@ def seven():
         print("You have drawn 7 cards from the deck.")
         print("Your new hand:")
         player.show()
-        drew_7 = True
     else:
         if len(deck) < 7:
             deck.append(discard[:-1])
@@ -88,7 +89,6 @@ def seven():
         else:
             player.draw(deck, 7)
         print(player.name + " has drawn 7 from the deck.")
-        drew_7 = True
     pass
         
 def cpu_turn(player):
@@ -146,12 +146,13 @@ def cpu_turn(player):
                 player.hand.remove(choice)
                 discard.append(choice)
                 try:
-                    suits_in_hand = {S:0, D:0, C:0, H:0}
+                    #Finding the most beneficial card to change the current card to by finding the max.
+                    suits_in_hand = {"S":0, "D":0, "C":0, "H":0}
                     for card in player.hand:
                         for suit in suits_in_hand.keys:
                             suits_in_hand[suit] = suits_in_hand.count(suit)
                     max_suit = max(suits_in_hand)
-                    max = []
+                    max = []  
                     for card in player.hand:
                         if card.suit == max_suit:
                             max.append(card)
@@ -160,7 +161,12 @@ def cpu_turn(player):
                     player.hand.remove(choice)
                     discard.append(choice)
                 except:
-                    #During the possibility there is no max suit
+                    #During the possibility there is no max suit.
+                    valid = []
+                    for card in player.hand:
+                        if check_wild(card) == False:
+                            #To make sure that the cpu doesn't put a special card on a Queen card.
+                            valid.append(card)
                     choice = random.choice(valid)
                     print(player.name + " plays " + str(choice.show()))
                     player.hand.remove(choice)
@@ -169,12 +175,10 @@ def cpu_turn(player):
             print(player.name + " plays a +7.")
             player.hand.remove(choice)
             discard.append(choice)
-            drew_7 = False
-        elif choice.face == "A":
+        elif choice.face == "A":            
             print(player.name + " plays a SKIP.")
             player.hand.remove(choice)
             discard.append(choice)
-            been_skipped = False
         pass
 
 def user_turn(player):
@@ -183,7 +187,7 @@ def user_turn(player):
     """
     user_action = input("Action: ").upper()
     if len(user_action) > 1:
-        #Checking to see if the user played a card
+        #Checking to see if the user wishes to play a card
         for card in player.hand:
             if card.show() == user_action:
                 chosen = card
@@ -199,21 +203,18 @@ def user_turn(player):
                 elif chosen.face == "7":
                     print("You have played +7.")
                     player.hand.remove(chosen)
-                    discard.append(chosen)            
-                    drew_7 = False
+                    discard.append(chosen)     
                     pass
                 elif chosen.face == "A":
                     print("You have played SKIP.")
                     player.hand.remove(chosen)
                     discard.append(chosen)
-                    been_skipped = False
                     pass
                 else:
                     #If not a special card
                     print("You have played " + chosen.show() + ".")
                     player.hand.remove(chosen)
-                    discard.append(chosen)
-                    
+                    discard.append(chosen)                    
                     pass
             else:
                 print("You cannot play that. Try to match the suit or face.")
@@ -247,24 +248,30 @@ def user_turn(player):
             user_turn(player)
 
 def check_previous(card):
+    global drew_7
+    global skipped
+
     if card.face == "7":
-        if drew_7 == False:
-            seven()
-        else:
+        if drew_7 == True:
+            drew_7 = False
             if player.brain == "Human":
                 user_turn(player)
             else:
                 cpu_turn(player)
+        else:
+            seven()
+            drew_7 = True
     elif card.face == "A":
-        if been_skipped == False:
+        if skipped == False:
             if player.brain == "Human":
                 print("You have been skipped.")
-                been_skipped = True
+                skipped = True
             else:
                 print(player.name + " has been skipped.")
-                been_skipped = True
+                skipped = True
             pass
         else:
+            skipped = False
             if player.brain == "Human":
                 user_turn(player)
             else:
@@ -318,15 +325,12 @@ if __name__ == "__main__":
     round_over = False
     game_over = False
     skipped = False
+    drew_7 = False
 
     #Players List to keep track of turns
     player_order = [user]
     for i in range(1, int(num_cpu) + 1):
         player_order.append(cpus[i])
-    
-    for player in player_order:
-        player.add_points()
-        print(player.score)
 
     while not game_over:
         for player in player_order:
