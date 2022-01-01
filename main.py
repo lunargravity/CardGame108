@@ -174,6 +174,7 @@ def cpu_turn(player):
             print(player.name + " plays a SKIP.")
             player.hand.remove(choice)
             discard.append(choice)
+            been_skipped = False
         pass
 
 def user_turn(player):
@@ -204,7 +205,8 @@ def user_turn(player):
                 elif chosen.face == "A":
                     print("You have played SKIP.")
                     player.hand.remove(chosen)
-                    discard.append(chosen)                    
+                    discard.append(chosen)
+                    been_skipped = False
                     pass
                 else:
                     #If not a special card
@@ -254,11 +256,19 @@ def check_previous(card):
             else:
                 cpu_turn(player)
     elif card.face == "A":
-        if player.brain == "Human":
-            print("You have been skipped.")
+        if been_skipped == False:
+            if player.brain == "Human":
+                print("You have been skipped.")
+                been_skipped = True
+            else:
+                print(player.name + " has been skipped.")
+                been_skipped = True
+            pass
         else:
-            print(player.name + " has been skipped.")
-        pass
+            if player.brain == "Human":
+                user_turn(player)
+            else:
+                cpu_turn(player)
     else:
         if player.brain == "Human":
             user_turn(player)
