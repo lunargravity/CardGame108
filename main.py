@@ -69,14 +69,18 @@ def seven(card):
     """
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
-    new_cards = ""
-    for i in range(7):
-        new = player.draw(deck)
-        new_cards += "|" + str(new.show()) + "|"
-    print("You have drawn 7 cards from the deck:")
-    print(new_cards)
-    print("Your new hand:")
-    player.show()
+    if player.brain == "Human":
+        new_cards = ""
+        for i in range(7):
+            new = player.draw(deck)
+            new_cards += "|" + str(new.show()) + "|"
+        print("You have drawn 7 cards from the deck:")
+        print(new_cards)
+        print("Your new hand:")
+        player.show()
+    else:
+        player.draw(deck, 7)
+        print(player.name + "has drawn 7 from the deck.")
     pass
         
 def cpu_turn(player):
@@ -219,7 +223,7 @@ def check_previous(card):
     if discard[-1].face == "7":
         seven()
     elif discard[-1].face == "A":
-
+        print("You have been skipped.")
 
 
 #When game starts
