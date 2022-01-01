@@ -70,13 +70,23 @@ def seven():
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
     if player.brain == "Human":
-        player.draw(deck, 7)
+        if len(deck) < 7:
+            deck.append(discard[:-1])
+            deck.shuffle()
+            player.draw(deck, 7)
+        else:
+            player.draw(deck, 7)
         print("You have drawn 7 cards from the deck.")
         print("Your new hand:")
         player.show()
         drew_7 = True
     else:
-        player.draw(deck, 7)
+        if len(deck) < 7:
+            deck.append(discard[:-1])
+            deck.shuffle()
+            player.draw(deck, 7)
+        else:
+            player.draw(deck, 7)
         print(player.name + " has drawn 7 from the deck.")
         drew_7 = True
     pass
@@ -109,7 +119,12 @@ def cpu_turn(player):
 
     if choice == None:
         print(player.name + " cannot do anything. So they draw.")
-        player.draw(deck)
+        if len(deck) < 1:
+            deck.append(discard[:-1])
+            deck.shuffle()
+            player.draw(deck)
+        else:
+            player.draw(deck)
         pass
     else:
         if choice in valid:
@@ -120,7 +135,12 @@ def cpu_turn(player):
             if len(player.hand) <= 2:
                 #Because a player cannot end a round on a Queen card.
                 print(player.name + " cannot do anything. So they draw.")
-                player.draw(deck)
+                if len(deck) < 1:
+                    deck.append(discard[:-1])
+                    deck.shuffle()
+                    player.draw(deck)
+                else:
+                    player.draw(deck)
             else:
                 print(player.name + " plays a QUEEN.")
                 player.hand.remove(choice)
@@ -211,7 +231,12 @@ def user_turn(player):
             print(s)
             user_turn(player)
         elif user_action == "D":
-            player.draw(deck)
+            if len(deck) < 1:
+                deck.append(discard[:-1])
+                deck.shuffle()
+                player.draw(deck)
+            else:
+                player.draw(deck)
             new = player.hand[-1]
             print("You have drawn " + new.show() + " from the deck.")
             pass
