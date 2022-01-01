@@ -65,22 +65,20 @@ def queen():
         print("You cannot play a special card on top of a Queen. Play a different card.")
         queen()
 
-def seven(card):
+def seven():
     """
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
     if player.brain == "Human":
-        new_cards = ""
-        for i in range(7):
-            new = player.draw(deck)
-            new_cards += "|" + str(new.show()) + "|"
-        print("You have drawn 7 cards from the deck:")
-        print(new_cards)
+        player.draw(deck, 7)
+        print("You have drawn 7 cards from the deck.")
         print("Your new hand:")
         player.show()
+        drew_7 = True
     else:
         player.draw(deck, 7)
-        print(player.name + "has drawn 7 from the deck.")
+        print(player.name + " has drawn 7 from the deck.")
+        drew_7 = True
     pass
         
 def cpu_turn(player):
@@ -148,11 +146,12 @@ def cpu_turn(player):
                     player.hand.remove(choice)
                     discard.append(choice)
         elif choice.face == "7":
-            print(player.name + "plays a +7.")
+            print(player.name + " plays a +7.")
             player.hand.remove(choice)
             discard.append(choice)
+            drew_7 = False
         elif choice.face == "A":
-            print(player.name + "plays a SKIP.")
+            print(player.name + " plays a SKIP.")
             player.hand.remove(choice)
             discard.append(choice)
         pass
@@ -179,7 +178,8 @@ def user_turn(player):
                 elif chosen.face == "7":
                     print("You have played +7.")
                     player.hand.remove(chosen)
-                    discard.append(chosen)                    
+                    discard.append(chosen)            
+                    drew_7 = False
                     pass
                 elif chosen.face == "A":
                     print("You have played SKIP.")
@@ -220,11 +220,25 @@ def user_turn(player):
             user_turn(player)
 
 def check_previous(card):
-    if discard[-1].face == "7":
-        seven()
-    elif discard[-1].face == "A":
-        print("You have been skipped.")
-
+    if card.face == "7":
+        if drew_7 == False:
+            seven()
+        else:
+            if player.brain == "Human":
+                user_turn(player)
+            else:
+                cpu_turn(player)
+    elif card.face == "A":
+        if player.brain == "Human":
+            print("You have been skipped.")
+        else:
+            print(player.name + " has been skipped.")
+        pass
+    else:
+        if player.brain == "Human":
+            user_turn(player)
+        else:
+            cpu_turn(player)
 
 #When game starts
 if __name__ == "__main__":
@@ -283,10 +297,10 @@ if __name__ == "__main__":
         for player in player_order:
             if player.brain == "Human":
                 player.show()
-                user_turn(player)
+                check_previous(discard[-1])
                 print("Current Card: " + str(discard[-1].show()))
             elif player.brain == "CPU":
-                cpu_turn(player)
+                check_previous(discard[-1])
                 print("Current Card: " + str(discard[-1].show()))
                 pass
             else:
