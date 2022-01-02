@@ -25,6 +25,7 @@ def help():
     s += ("| If you reach 108 points at the end of a round, you are out.   |\n")
     s += ("| The game keeps going until there is only one player left.     |\n")
     s += ("| Disclaimer: You cannot end on a Queen card.                   |\n")
+    s += ("| Queens are wild cards. 7s make next player draw 7. Aces skip. |\n")
     s += ("+---------------------------------------------------------------+\n")
     return s
 
