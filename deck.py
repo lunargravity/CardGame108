@@ -30,7 +30,19 @@ class buildDeck:
         for i in range(times):
             return self.deck.pop()
 
+    def remove(self, card):
+        for c in self.deck:
+            if card.show() == c.show():
+                self.deck.remove(c)
+
+    def __len__(self):
+        return len(self.deck)
+
+
 
 #test = buildDeck()
 #test.shuffle()
-#test.show()
+#print(len(test))
+#testcard = Card("S", "2")
+#test.remove(testcard)
+#print(len(test))
