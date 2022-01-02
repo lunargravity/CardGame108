@@ -16,7 +16,7 @@ def help():
     """
     s  = ("+---------------------------------------------------------------+\n")
     s += ("| Instructions:                                                 |\n")
-    s += ("| D to draw, P to pass, S for stats, Q to quit                  |\n")
+    s += ("| Type D to draw from the deck.                                 |\n")
     s += ("| S for spades, D for diamonds, C for clubs, H for hearts       |\n")
     s += ("| Type the card you want to play. i.e. \"S2\" for 2 of Spades.    |\n")
     s += ("| At the end of the round, points will be counted accordingly.  |\n")
