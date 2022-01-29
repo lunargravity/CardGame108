@@ -66,17 +66,13 @@ def queen(player, discard):
     """
     The special ability of a queen card to add an additional card to the pile.
     """
-    wild = input("Add a card: ").upper()
-    for card in player.hand:
-        if card.show() == wild:
-            wild = card
-    if check_wild(wild) == False:
-        player.hand.remove(wild)
-        discard.append(wild)
+    wild = input("Choose a suit (D, H, S, C): ").upper()
+    if wild == "D" or wild == "H" or wild == "S" or wild == "C":
+        discard.append(Card(wild, "Q"))
         pass
     else:
-        print("You cannot play a special card on top of a Queen. Play a different card.")
-        queen(player, discard)
+        print("Invalid suit. Please try again.")
+        queen()
 
 def seven(player, discard, deck):
     """
@@ -186,34 +182,20 @@ def cpu_turn(player, deck, discard):
                 print(player.name + " plays a QUEEN.")
                 player.hand.remove(choice)
                 discard.append(choice)
-                try:
-                    #Finding the most beneficial card to change the current card to by finding the max.
-                    suits_in_hand = {"S":0, "D":0, "C":0, "H":0}
-                    for card in player.hand:
-                        for suit in suits_in_hand.keys:
-                            suits_in_hand[suit] = suits_in_hand.count(suit)
-                    print("Suits in hand: " + str(suits_in_hand))
-                    max_suit = max(suits_in_hand)
-                    max = []  
-                    for card in player.hand:
-                        if card.suit == max_suit and card.face != "7" or card.face != "A":
-                            max.append(card)
-                    print("Max: " + str(c.show() for c in max))
-                    choice = random.choice(max)
-                    print(player.name + " plays " + str(choice.show()))
-                    player.hand.remove(choice)
-                    discard.append(choice)
-                except:
-                    #During the possibility there is no max suit.
-                    valid = []
-                    for card in player.hand:
-                        if check_wild(card) == False:
-                            #To make sure that the cpu doesn't put a special card on a Queen card.
-                            valid.append(card)
-                    choice = random.choice(valid)
-                    print(player.name + " plays " + str(choice.show()))
-                    player.hand.remove(choice)
-                    discard.append(choice)
+                suits_in_hand = {}
+                for c in player.hand:
+                    if (c[0] in suits_in_hand):
+                        suits_in_hand[c[0]] += 1
+                    else:
+                        suits_in_hand[c[0]] = 1
+                print(suits_in_hand)
+                maxim = max(suits_in_hand.values())
+                suits = list()
+                for key, value in suits_in_hand.items():
+                    if value == maxim:
+                        suits.append(key)
+                choice = random.choice(suits)
+                discard.append(Card(choice, "Q"))
 
         elif choice.face == "7":
             print(player.name + " plays a +3.")
