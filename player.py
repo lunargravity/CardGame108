@@ -2,7 +2,7 @@
 
 from deck import buildDeck
 from card import Card
-#from main import *
+from main import *
 
 class Player:
     def __init__(self, name, brain = "CPU"):
