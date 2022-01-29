@@ -82,28 +82,39 @@ def seven(player, discard, deck):
     """
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
+
+    sevens = 0
+    last = discard[-4:]
+    last.reverse()
+    for c in last:
+        if c.face == "7":
+            sevens += 1
+        else:
+            break
+    num = sevens * 3
+
     if player.brain == "Human":
-        if len(deck) < 3:
+        if len(deck) < num:
             top = discard.pop()
             deck = buildDeck()
             deck.shuffle()
             deck.remove(top)
             discard.append(top)
-            player.draw(deck, 3)
+            player.draw(deck, num)
         else:
-            player.draw(deck, 3)
-        print("You have drawn 3 cards from the deck.")
+            player.draw(deck, num)
+        print("You have drawn " + str(num) + " cards from the deck.")
     else:
-        if len(deck) < 3:
+        if len(deck) < num:
             top = discard.pop()
             deck = buildDeck()
             deck.shuffle()
             deck.remove(top)
             discard.append(top)
-            player.draw(deck, 3)
+            player.draw(deck, num)
         else:
-            player.draw(deck, 3)
-        print(player.name + " has drawn 3 from the deck.")
+            player.draw(deck, num)
+        print(player.name + " has drawn " + str(num) + " from the deck.")
     drew_7 = True
     pass
         
