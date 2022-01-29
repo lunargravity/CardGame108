@@ -170,18 +170,9 @@ def cpu_turn(player, deck, discard):
             player.hand.remove(choice)
             discard.append(choice)
         elif choice.face == "Q":
-            if len(player.hand) <= 2:
-                #Because a player cannot end a round on a Queen card.
-                print(player.name + " cannot do anything. So they draw.")
-                if len(deck) < 1:
-                    top = discard.pop()
-                    deck = buildDeck()
-                    deck.shuffle()
-                    deck.remove(top)
-                    discard.append(top)
-                    player.draw(deck)
-                else:
-                    player.draw(deck)
+            if len(player.hand) == 1:
+                #The player's points will be deducted by 30 points
+                player.score -= 30
             else:
                 print(player.name + " plays a QUEEN.")
                 player.hand.remove(choice)
@@ -238,18 +229,8 @@ def user_turn(player, deck, discard):
     if len(player.hand) == 1:
         for card in player.hand:
             if card.face == "Q":
-                print("You cannot end on a QUEEN card. You will be forced to draw.")
-                if len(deck) < 1:
-                    top = discard.pop()
-                    deck = buildDeck()
-                    deck.shuffle()
-                    deck.remove(top)
-                    discard.append(top)
-                    player.draw(deck)
-                else:
-                    player.draw(deck)
-                new = player.hand[-1]
-                print("You have drawn " + new.show() + " from the deck.")
+                print("You are ending with a Queen, so your points will be deducted by 30 points.")
+                player.score -= 30
             pass
 
     
@@ -406,7 +387,6 @@ def round():
                 if player.brain == "Human":
                     player.show()
                     check_previous(player, discard[-1], deck, discard)
-                    #print(Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + Fore.RESET)
                     check_round_over(player, player_order)
                 elif player.brain == "CPU":
                     check_previous(player, discard[-1], deck, discard)
