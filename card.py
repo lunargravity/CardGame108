@@ -10,7 +10,7 @@ class Card:
             self.ability = "add"
             #Can add any card additionally
         elif self.face == "7":
-            self.ability = "+7"
+            self.ability = "+3"
             #Draw 7 additional cards
         elif self.face == "A":
             self.ability = "skip"
@@ -19,12 +19,14 @@ class Card:
             self.ability = None
 
         #Points Assigner required for end of a round
-        if self.face == "2" or self.face == "3":
+        if self.face == "2" or self.face == "3" or self.face == "4" or self.face == "5" or self.face == "6":
             self.points = 0
         elif self.face == "Q":
-            self.points = 31
-        elif self.face == "J" or self.face == "K":
-            self.points = 10
+            self.points = 30
+        elif self.face == "J":
+            self.points = 2
+        elif self.face == "K":
+            self.points = 4
         elif self.face == "A":
             self.points = 11
         else:
@@ -39,12 +41,26 @@ class Card:
     def show(self):
         return "{}{}".format(self.suit, self.face)
 
-#test = Card("S", "Q")
+
+
+#When testing, add print statements to functions before return statements
+
+#test = Card("S", "2")
 #test.show()
 #test.check_ability()
 #test.check_points()
 
-#test2 = Card("D", "4")
+#test2 = Card("D", "J")
+#test2.show()
+#test2.check_ability()
+#test2.check_points()
+
+#test2 = Card("D", "K")
+#test2.show()
+#test2.check_ability()
+#test2.check_points()
+
+#test2 = Card("D", "8")
 #test2.show()
 #test2.check_ability()
 #test2.check_points()
