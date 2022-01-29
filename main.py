@@ -83,29 +83,27 @@ def seven(player, discard, deck):
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
     if player.brain == "Human":
-        if len(deck) < 7:
+        if len(deck) < 3:
             top = discard.pop()
             deck = buildDeck()
             deck.shuffle()
             deck.remove(top)
             discard.append(top)
-            player.draw(deck, 7)
+            player.draw(deck, 3)
         else:
-            player.draw(deck, 7)
-        print("You have drawn 7 cards from the deck.")
-        print("Your new hand:")
-        player.show()
+            player.draw(deck, 3)
+        print("You have drawn 3 cards from the deck.")
     else:
-        if len(deck) < 7:
+        if len(deck) < 3:
             top = discard.pop()
             deck = buildDeck()
             deck.shuffle()
             deck.remove(top)
             discard.append(top)
-            player.draw(deck, 7)
+            player.draw(deck, 3)
         else:
-            player.draw(deck, 7)
-        print(player.name + " has drawn 7 from the deck.")
+            player.draw(deck, 3)
+        print(player.name + " has drawn 3 from the deck.")
     drew_7 = True
     pass
         
@@ -207,7 +205,7 @@ def cpu_turn(player, deck, discard):
                     discard.append(choice)
 
         elif choice.face == "7":
-            print(player.name + " plays a +7.")
+            print(player.name + " plays a +3.")
             player.hand.remove(choice)
             discard.append(choice)
             drew_7 = False
@@ -230,7 +228,26 @@ def user_turn(player, deck, discard):
         for card in player.hand:
             if card.face == "Q":
                 print("You are ending with a Queen, so your points will be deducted by 30 points.")
+                time.sleep(1)
                 player.score -= 30
+                player.hand.remove(card)
+                discard.append(card)
+            elif card.face == "7":
+                print("You cannot end with a 7. You will be forced to draw a card.")
+                time.sleep(1)
+                player.hand.remove(card)
+                discard.append(card)
+                if len(deck) < 1:
+                        top = discard.pop()
+                        deck = buildDeck()
+                        deck.shuffle()
+                        deck.remove(top)
+                        discard.append(top)
+                        player.draw(deck)
+                else:
+                    player.draw(deck)
+                new = player.hand[-1]
+                print("You have drawn " + new.show() + " from the deck.")
             pass
 
     
@@ -252,7 +269,7 @@ def user_turn(player, deck, discard):
                             discard.append(chosen)                    
                             queen(player, discard)
                         elif chosen.face == "7":
-                            print("You have played +7.")
+                            print("You have played +3.")
                             player.hand.remove(chosen)
                             discard.append(chosen)     
                             drew_7 = False
