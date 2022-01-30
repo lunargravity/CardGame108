@@ -72,22 +72,25 @@ def queen(player, discard):
         pass
     else:
         print("Invalid suit. Please try again.")
-        queen()
+        queen(player, discard)
 
 def seven(player, discard, deck):
     """
     Makes the player draw 7 cards due to the special ability of the 7 card.
     """
 
-    sevens = 0
-    last = discard[-4:]
-    last.reverse()
-    for c in last:
-        if c.face == "7":
-            sevens += 1
-        else:
-            break
-    num = sevens * 3
+    if drew_7 == False:
+        sevens = 0
+        last = discard[-4:]
+        last.reverse()
+        for c in last:
+            if c.face == "7":
+                sevens += 1
+            else:
+                break
+        num = sevens * 3
+    else:
+        num = 3
 
     if player.brain == "Human":
         if len(deck) < num:
@@ -100,6 +103,7 @@ def seven(player, discard, deck):
         else:
             player.draw(deck, num)
         print("You have drawn " + str(num) + " cards from the deck.")
+
     else:
         if len(deck) < num:
             top = discard.pop()
@@ -112,15 +116,13 @@ def seven(player, discard, deck):
             player.draw(deck, num)
         print(player.name + " has drawn " + str(num) + " from the deck.")
     drew_7 = True
+    return drew_7
     pass
         
 def cpu_turn(player, deck, discard):
     """
     The logic behind the cpu's gameplay.
     """
-    
-    global drew_7
-    global skipped
 
     valid = []
     special = []
@@ -184,11 +186,10 @@ def cpu_turn(player, deck, discard):
                 discard.append(choice)
                 suits_in_hand = {}
                 for c in player.hand:
-                    if (c[0] in suits_in_hand):
-                        suits_in_hand[c[0]] += 1
+                    if (c.suit in suits_in_hand):
+                        suits_in_hand[c.suit] += 1
                     else:
-                        suits_in_hand[c[0]] = 1
-                print(suits_in_hand)
+                        suits_in_hand[c.suit] = 1
                 maxim = max(suits_in_hand.values())
                 suits = list()
                 for key, value in suits_in_hand.items():
@@ -196,6 +197,16 @@ def cpu_turn(player, deck, discard):
                         suits.append(key)
                 choice = random.choice(suits)
                 discard.append(Card(choice, "Q"))
+                if choice == "D":
+                    print(player.name + " has chosen Diamonds.")
+                elif choice == "H":
+                    print(player.name + " has chosen Hearts.")
+                elif choice == "S":
+                    print(player.name + " has chosen Spades.")
+                elif choice == "C":
+                    print(player.name + " has chosen Clubs.")
+                else:
+                    print("Something went wrong. They chose " + choice)
 
         elif choice.face == "7":
             print(player.name + " plays a +3.")
@@ -213,9 +224,6 @@ def user_turn(player, deck, discard):
     """
     The function behind the user's turn 
     """
-    
-    global drew_7
-    global skipped
 
     if len(player.hand) == 1:
         for card in player.hand:
@@ -315,9 +323,6 @@ def stats(player, player_order, deck, discard):
     print(s)
 
 def check_previous(player, card, deck, discard):
-    
-    global drew_7
-    global skipped
 
     if card.face == "7":
         if drew_7 == True:
@@ -335,9 +340,11 @@ def check_previous(player, card, deck, discard):
             if player.brain == "Human":
                 print("You have been skipped.")
                 skipped = True
+                return skipped
             else:
                 print(player.name + " has been skipped.")
                 skipped = True
+                return skipped
             pass
         else:
             if player.brain == "Human":
@@ -389,16 +396,17 @@ def round():
 
     #Flags
     round_over = False
-    skipped = False
-    drew_7 = False
 
     while round_over == False:
         for player in player_order:
+                print("7 status: " + str(drew_7))
+                print("Skip status: " + str(skipped))
                 if player.brain == "Human":
                     player.show()
                     check_previous(player, discard[-1], deck, discard)
                     check_round_over(player, player_order)
                 elif player.brain == "CPU":
+                    player.show()
                     check_previous(player, discard[-1], deck, discard)
                     check_round_over(player, player_order)
                     pass
