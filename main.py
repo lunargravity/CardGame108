@@ -10,13 +10,6 @@ import colorama
 from colorama import Fore
 colorama.init()
 
-def help():
-    """
-    Prints a help message
-    """
-    
-    return s
-
 """
 When the game starts
 """
@@ -26,6 +19,7 @@ if __name__ == "__main__":
     #Player and CPU Storage
     name = input("Enter your name: ").title()
     user = Player(name, brain = "Human")
+    #Turn Order
     order = [user]
     num_cpu = input("Number of CPU players (1-4): ")
     if 1 <= int(num_cpu) <= 4:
@@ -55,12 +49,10 @@ if __name__ == "__main__":
     s += ("+---------------------------------------------------------------+\n")
     print(s)
 
+    #Game begins
     game = True
 
     #Main Game Loop
-
-    total = 0
-
     while game:
         print("Game is running.")
         round_over = False
@@ -90,11 +82,13 @@ if __name__ == "__main__":
         #Flags
         drew = False
         skipped = False
-
+        
+        #Round Loop
         while not round_over:
             #Player turns
             for player in order:
                 if player.brain == "Human":
+                    #Shows Player hand
                     player.show()
                     if discard[-1].face == "7":
                         if drew == True:
@@ -148,7 +142,89 @@ if __name__ == "__main__":
                             print("Skip status is now " + str(skipped))
                         player.hand.remove(ran)
                         discard.append(ran)
+                        
+                    #Checking if round over
+                    if len(player.hand) < 1:
+                        round_over = True
+                    else:
+                        round_over = False
+                        pass
+                        
+                    if round_over == True:
+                        print("Round over! " + player.name + " wins this round!")
+                        time.sleep(1)
+                        
+                        for player in order:
+                            player.add_points()
+                        
+                        p  = ("+---------------------------------------------------------------+\n")
+                        p += ("| Scores:\n")
+                        p += ("| Your Score: {}\n").format(user.score)
+                        for player in player_order[1:]:
+                            p += ("| {}'s Score: {} \n").format(player.name, player.score)
+                        p += ("+---------------------------------------------------------------+\n")
+                        print(p)
+                        
+                        time.sleep(1)
+                        for player in order:
+                            if player.brain == "Human":
+                                if player.score == 108:
+                                    print("You have exactly 108, so your points will be divided by 2. Your new score is now 54.")
+                                    player.score = 54
+                                elif player.score > 108:
+                                    print(player.name + ", you have over 108 points. You are out.")
+                                    decision = input("Type R to restart or E to exit.").upper()
+                                    if decision == "R":
+                                        print("New game will begin..."
+                                        countdown = 3
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        os.execl(sys.executable, sys.executable, *sys.argv)
+                                    elif decision == "E":
+                                        print("Goodbye! Thank you for playing!")
+                                        countdown = 3
+                                        print("Exiting...")
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        exit()
+                                    else:
+                                        print("Invalid action. Exiting anyways.")
+                                        print("Goodbye! Thank you for playing!")
+                                        countdown = 3
+                                        print("Exiting...")
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        exit()
+                                else:
+                                    pass
+                            else:
+                                if player.score == 108:
+                                    print(player.name + " has exactly 108 points, so their points will be divided by 2. Their score is now 54.")
+                                    player.score = 54
+                                elif player.score > 108:
+                                    print(player.name + " has over 108 points. They are out.")
+                                    order.remove(player)
+                                else:
+                                    pass
+                        print("New round will begin...")
+                        countdown = 3
+                        while countdown > 0:
+                            print("...in " + str(countdown))
+                            time.sleep(1)
+                            countdown -= 1
+                        round_over = False
+                    else:
+                        pass
+        
+                #CPU Turns
                 elif player.brain == "CPU":
+                    #Shows CPU Hand (delete later)
                     player.show()
                     if discard[-1].face == "7":
                         if drew == True:
@@ -202,6 +278,86 @@ if __name__ == "__main__":
                             print("Skip status is now " + str(skipped))
                         player.hand.remove(ran)
                         discard.append(ran)
+                    
+                    #Checking if round over
+                    if len(player.hand) < 1:
+                        round_over = True
+                    else:
+                        round_over = False
+                        pass
+                        
+                    if round_over == True:
+                        print("Round over! " + player.name + " wins this round!")
+                        time.sleep(1)
+                        
+                        for player in order:
+                            player.add_points()
+                        
+                        p  = ("+---------------------------------------------------------------+\n")
+                        p += ("| Scores:\n")
+                        p += ("| Your Score: {}\n").format(user.score)
+                        for player in player_order[1:]:
+                            p += ("| {}'s Score: {} \n").format(player.name, player.score)
+                        p += ("+---------------------------------------------------------------+\n")
+                        print(p)
+                        
+                        time.sleep(1)
+                        for player in order:
+                            if player.brain == "Human":
+                                if player.score == 108:
+                                    print("You have exactly 108, so your points will be divided by 2. Your new score is now 54.")
+                                    player.score = 54
+                                elif player.score > 108:
+                                    print(player.name + ", you have over 108 points. You are out.")
+                                    decision = input("Type R to restart or E to exit.").upper()
+                                    if decision == "R":
+                                        print("New game will begin..."
+                                        countdown = 3
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        os.execl(sys.executable, sys.executable, *sys.argv)
+                                    elif decision == "E":
+                                        print("Goodbye! Thank you for playing!")
+                                        countdown = 3
+                                        print("Exiting...")
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        exit()
+                                    else:
+                                        print("Invalid action. Exiting anyways.")
+                                        print("Goodbye! Thank you for playing!")
+                                        countdown = 3
+                                        print("Exiting...")
+                                        while countdown > 0:
+                                            print("...in " + str(countdown))
+                                            time.sleep(1)
+                                            countdown -= 1
+                                        exit()
+                                else:
+                                    pass
+                            else:
+                                if player.score == 108:
+                                    print(player.name + " has exactly 108 points, so their points will be divided by 2. Their score is now 54.")
+                                    player.score = 54
+                                elif player.score > 108:
+                                    print(player.name + " has over 108 points. They are out.")
+                                    order.remove(player)
+                                else:
+                                    pass
+                        print("New round will begin...")
+                        countdown = 3
+                        while countdown > 0:
+                            print("...in " + str(countdown))
+                            time.sleep(1)
+                            countdown -= 1
+                        round_over = False
+                    else:
+                        pass
+                        
                 else:
                     print("Who are you??? Get out!")
                     exit()
