@@ -160,7 +160,7 @@ if __name__ == "__main__":
                         p  = ("+---------------------------------------------------------------+\n")
                         p += ("| Scores:\n")
                         p += ("| Your Score: {}\n").format(user.score)
-                        for player in player_order[1:]:
+                        for player in order[1:]:
                             p += ("| {}'s Score: {} \n").format(player.name, player.score)
                         p += ("+---------------------------------------------------------------+\n")
                         print(p)
@@ -228,19 +228,95 @@ if __name__ == "__main__":
                     player.show()
                     if discard[-1].face == "7":
                         if drew == True:
-                            print("User doesn't draw cards.")
-                            #+----------------------------+
-                            ran = random.choice(player.hand)
-                            print(player.name + " plays " + ran.show())
-                            if ran.face == "7":
-                                drew = False
-                                print("Drew status is now " + str(drew))
-                            elif ran.face == "A":
-                                skipped = False
-                                print("Skip status is now " + str(skipped))
-                            player.hand.remove(ran)
-                            discard.append(ran)
-                            #+----------------------------+
+                            valid = []
+                            special = []
+                            
+                            #Organizing hand into two piles, valid regular cards and special cards
+                            for c in player.hand:
+                                if c.face == "Q":
+                                    special.append(c)
+                                elif c.face == "7":
+                                    special.append(c)
+                                elif c.face == "A":
+                                    special.append(c)
+                                elif c.face == discard[-1].face:
+                                    valid.append(c)
+                                elif c.suit == discard[-1].suit:
+                                    valid.append(c)
+
+                            #First try valid regular card
+                            try:
+                                choice = random.choice(valid)
+                            except:
+                                #Then try special card
+                                try:
+                                    choice = random.choice(special)
+                                except:
+                                    choice = None
+
+                            #CPU will play a card
+                            if choice == None:
+                                print(player.name + " cannot do anything. So they draw.")
+                                if len(deck) < 1:
+                                    top = discard.pop()
+                                    deck = buildDeck()
+                                    deck.shuffle()
+                                    deck.remove(top)
+                                    discard.append(top)
+                                    player.draw(deck)
+                                else:
+                                    player.draw(deck)
+                                pass
+                            else:
+                                if choice in valid:
+                                    print(player.name + " plays " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                elif choice.face == "Q":
+                                    if len(player.hand) == 1:
+                                        #CPU's points will be deducted by 30 points
+                                        player.score -= 30
+                                        print(player.name + " plays a QUEEN as their last card.")
+                                        player.hand.remove(choice)
+                                        discard.append(choice)
+                                    else:
+                                        print(player.name + " plays a QUEEN.")
+                                        player.hand.remove(choice)
+                                        discard.append(choice)
+                                        suits_in_hand = {}
+                                        for c in player.hand:
+                                            if (c.suit in suits_in_hand):
+                                                suits_in_hand[c.suit] += 1
+                                            else:
+                                                suits_in_hand[c.suit] = 1
+                                        maximum = max(suits_in_hand.values())
+                                        suits = list()
+                                        for key, value in suits_in_hand.items():
+                                            if value == maximum:
+                                                suits.append(key)
+                                        choice = random.choice(suits)
+                                        discard.append(Card(choice, "Q"))
+                                        if choice == "D":
+                                            print(player.name + " has chosen Diamonds.")
+                                        elif choice == "H":
+                                            print(player.name + " has chosen Hearts.")
+                                        elif choice == "S":
+                                            print(player.name + " has chosen Spades.")
+                                        elif choice == "C":
+                                            print(player.name + " has chosen Clubs.")
+                                        else:
+                                            print("Something went wrong. They chose " + choice)
+                                elif choice.face == "7":
+                                    print(player.name + " plays a +3. A " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                    drew = False
+                                elif choice.face == "A":
+                                    print(player.name + " plays a SKIP. A " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                    skipped = False
+                                pass
                         else:
                             print("User draws cards.")
                             drew = True
@@ -250,35 +326,190 @@ if __name__ == "__main__":
                             #+----------------------------+
                     elif discard[-1].face == "A":
                         if skipped == True:
-                            print("User does not get skipped.")
-                            #+----------------------------+
-                            ran = random.choice(player.hand)
-                            print(player.name + " plays " + ran.show())
-                            if ran.face == "7":
-                                drew = False
-                                print("Drew status is now " + str(drew))
-                            elif ran.face == "A":
-                                skipped = False
-                                print("Skip status is now " + str(skipped))
-                            player.hand.remove(ran)
-                            discard.append(ran)
-                            #+----------------------------+
+                            valid = []
+                            special = []
+
+                            #Organizing hand into two piles, valid regular cards and special cards
+                            for c in player.hand:
+                                if c.face == "Q":
+                                    special.append(c)
+                                elif c.face == "7":
+                                    special.append(c)
+                                elif c.face == "A":
+                                    special.append(c)
+                                elif c.face == discard[-1].face:
+                                    valid.append(c)
+                                elif c.suit == discard[-1].suit:
+                                    valid.append(c)
+
+                            #First try valid regular card
+                            try:
+                                choice = random.choice(valid)
+                            except:
+                                #Then try special card
+                                try:
+                                    choice = random.choice(special)
+                                except:
+                                    choice = None
+
+                            #CPU will play a card
+                            if choice == None:
+                                print(player.name + " cannot do anything. So they draw.")
+                                if len(deck) < 1:
+                                    top = discard.pop()
+                                    deck = buildDeck()
+                                    deck.shuffle()
+                                    deck.remove(top)
+                                    discard.append(top)
+                                    player.draw(deck)
+                                else:
+                                    player.draw(deck)
+                                pass
+                            else:
+                                if choice in valid:
+                                    print(player.name + " plays " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                elif choice.face == "Q":
+                                    if len(player.hand) == 1:
+                                        #CPU's points will be deducted by 30 points
+                                        player.score -= 30
+                                        print(player.name + " plays a QUEEN as their last card.")
+                                        player.hand.remove(choice)
+                                        discard.append(choice)
+                                    else:
+                                        print(player.name + " plays a QUEEN.")
+                                        player.hand.remove(choice)
+                                        discard.append(choice)
+                                        suits_in_hand = {}
+                                        for c in player.hand:
+                                            if (c.suit in suits_in_hand):
+                                                suits_in_hand[c.suit] += 1
+                                            else:
+                                                suits_in_hand[c.suit] = 1
+                                        maximum = max(suits_in_hand.values())
+                                        suits = list()
+                                        for key, value in suits_in_hand.items():
+                                            if value == maximum:
+                                                suits.append(key)
+                                        choice = random.choice(suits)
+                                        discard.append(Card(choice, "Q"))
+                                        if choice == "D":
+                                            print(player.name + " has chosen Diamonds.")
+                                        elif choice == "H":
+                                            print(player.name + " has chosen Hearts.")
+                                        elif choice == "S":
+                                            print(player.name + " has chosen Spades.")
+                                        elif choice == "C":
+                                            print(player.name + " has chosen Clubs.")
+                                        else:
+                                            print("Something went wrong. They chose " + choice)
+                                elif choice.face == "7":
+                                    print(player.name + " plays a +3. A " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                    drew = False
+                                elif choice.face == "A":
+                                    print(player.name + " plays a SKIP. A " + str(choice.show()))
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                    skipped = False
+                                pass
                         else:
                             print("User gets skipped.")
                             skipped = True
                             print("Skip status is now " + str(skipped))
                     else:
-                        ran = random.choice(player.hand)
-                        print(player.name + " plays " + ran.show())
-                        if ran.face == "7":
-                            drew = False
-                            print("Drew status is now " + str(drew))
-                        elif ran.face == "A":
-                            skipped = False
-                            print("Skip status is now " + str(skipped))
-                        player.hand.remove(ran)
-                        discard.append(ran)
-                    
+                        valid = []
+                        special = []
+
+                        #Organizing hand into two piles, valid regular cards and special cards
+                        for c in player.hand:
+                            if c.face == "Q":
+                                special.append(c)
+                            elif c.face == "7":
+                                special.append(c)
+                            elif c.face == "A":
+                                special.append(c)
+                            elif c.face == discard[-1].face:
+                                valid.append(c)
+                            elif c.suit == discard[-1].suit:
+                                valid.append(c)
+
+                        #First try valid regular card
+                        try:
+                            choice = random.choice(valid)
+                        except:
+                            #Then try special card
+                            try:
+                                choice = random.choice(special)
+                            except:
+                                choice = None
+
+                        #CPU will play a card
+                        if choice == None:
+                            print(player.name + " cannot do anything. So they draw.")
+                            if len(deck) < 1:
+                                top = discard.pop()
+                                deck = buildDeck()
+                                deck.shuffle()
+                                deck.remove(top)
+                                discard.append(top)
+                                player.draw(deck)
+                            else:
+                                player.draw(deck)
+                            pass
+                        else:
+                            if choice in valid:
+                                print(player.name + " plays " + str(choice.show()))
+                                player.hand.remove(choice)
+                                discard.append(choice)
+                            elif choice.face == "Q":
+                                if len(player.hand) == 1:
+                                    #CPU's points will be deducted by 30 points
+                                    player.score -= 30
+                                    print(player.name + " plays a QUEEN as their last card.")
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                else:
+                                    print(player.name + " plays a QUEEN.")
+                                    player.hand.remove(choice)
+                                    discard.append(choice)
+                                    suits_in_hand = {}
+                                    for c in player.hand:
+                                        if (c.suit in suits_in_hand):
+                                            suits_in_hand[c.suit] += 1
+                                        else:
+                                            suits_in_hand[c.suit] = 1
+                                    maximum = max(suits_in_hand.values())
+                                    suits = list()
+                                    for key, value in suits_in_hand.items():
+                                        if value == maximum:
+                                            suits.append(key)
+                                    choice = random.choice(suits)
+                                    discard.append(Card(choice, "Q"))
+                                    if choice == "D":
+                                        print(player.name + " has chosen Diamonds.")
+                                    elif choice == "H":
+                                        print(player.name + " has chosen Hearts.")
+                                    elif choice == "S":
+                                        print(player.name + " has chosen Spades.")
+                                    elif choice == "C":
+                                        print(player.name + " has chosen Clubs.")
+                                    else:
+                                        print("Something went wrong. They chose " + choice)
+                            elif choice.face == "7":
+                                print(player.name + " plays a +3. A " + str(choice.show()))
+                                player.hand.remove(choice)
+                                discard.append(choice)
+                                drew = False
+                            elif choice.face == "A":
+                                print(player.name + " plays a SKIP. A " + str(choice.show()))
+                                player.hand.remove(choice)
+                                discard.append(choice)
+                                skipped = False
+                            pass
+
                     #Checking if round over
                     if len(player.hand) < 1:
                         round_over = True
