@@ -175,7 +175,7 @@ if __name__ == "__main__":
                                     print(player.name + ", you have over 108 points. You are out.")
                                     decision = input("Type R to restart or E to exit.").upper()
                                     if decision == "R":
-                                        print("New game will begin..."
+                                        print("New game will begin...")
                                         countdown = 3
                                         while countdown > 0:
                                             print("...in " + str(countdown))
@@ -311,7 +311,7 @@ if __name__ == "__main__":
                                     print(player.name + ", you have over 108 points. You are out.")
                                     decision = input("Type R to restart or E to exit.").upper()
                                     if decision == "R":
-                                        print("New game will begin..."
+                                        print("New game will begin...")
                                         countdown = 3
                                         while countdown > 0:
                                             print("...in " + str(countdown))
