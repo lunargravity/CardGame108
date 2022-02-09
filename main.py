@@ -214,10 +214,37 @@ if __name__ == "__main__":
                                     pass
                         print("New round will begin...")
                         countdown = 3
+                        
                         while countdown > 0:
                             print("...in " + str(countdown))
                             time.sleep(1)
                             countdown -= 1
+
+                        #Shuffle deck
+                        deck = buildDeck()
+                        deck.shuffle()
+
+                        #Drawing initial 5 cards
+                        for player in order:
+                            player.hand = []
+                            player.draw(deck, 5)
+
+                        #Flipping first card
+                        discard = []
+                        first = deck.draw()
+                        valid = False
+                        while not valid:
+                            if first.face == "Q" or first.face == "7" or first.face == "A":
+                                first = deck.draw()
+                                valid = False
+                            else:
+                                discard.append(first)
+                                print(Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + Fore.RESET)
+                                valid = True
+            
+                        #Flags
+                        drew = False
+                        skipped = False
                         round_over = False
                     else:
                         pass
@@ -527,7 +554,7 @@ if __name__ == "__main__":
                         p  = ("+---------------------------------------------------------------+\n")
                         p += ("| Scores:\n")
                         p += ("| Your Score: {}\n").format(user.score)
-                        for player in player_order[1:]:
+                        for player in order[1:]:
                             p += ("| {}'s Score: {} \n").format(player.name, player.score)
                         p += ("+---------------------------------------------------------------+\n")
                         print(p)
@@ -581,10 +608,37 @@ if __name__ == "__main__":
                                     pass
                         print("New round will begin...")
                         countdown = 3
+                        
                         while countdown > 0:
                             print("...in " + str(countdown))
                             time.sleep(1)
                             countdown -= 1
+
+                        #Shuffle deck
+                        deck = buildDeck()
+                        deck.shuffle()
+
+                        #Drawing initial 5 cards
+                        for player in order:
+                            player.hand = []
+                            player.draw(deck, 5)
+
+                        #Flipping first card
+                        discard = []
+                        first = deck.draw()
+                        valid = False
+                        while not valid:
+                            if first.face == "Q" or first.face == "7" or first.face == "A":
+                                first = deck.draw()
+                                valid = False
+                            else:
+                                discard.append(first)
+                                print(Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + Fore.RESET)
+                                valid = True
+            
+                        #Flags
+                        drew = False
+                        skipped = False
                         round_over = False
                     else:
                         pass
