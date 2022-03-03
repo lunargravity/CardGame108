@@ -30,11 +30,28 @@ class Player:
         return self.score
 
     def show(self):
-        hand = ""
-        print("{name}'s cards:".format(name=self.name))
+        print("{}'s cards:".format(self.name))
+        a = ""
+        b = ""
+        c = ""
+
         for card in self.hand:
-            hand += "|" + str(card.show()) + "|"
-        print(hand)
+            if card.suit == "S":
+                symbol = "♠"
+            elif card.suit == "H":
+                symbol = "♥"
+            elif card.suit == "D":
+                symbol = "♦"
+            else:
+                symbol = "♣"
+
+            a += "┌────┐"
+            b += ("|{:<2} {}|").format(card.face, symbol)
+            c += "└────┘"
+
+        print(a)
+        print(b)
+        print(c)
 
     def cpu_show(self):
         print("{name}'s cards: {num}".format(name=self.name, num=int(len(self.hand))))

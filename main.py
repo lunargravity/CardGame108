@@ -251,8 +251,7 @@ if __name__ == "__main__":
         
                 #CPU Turns
                 elif player.brain == "CPU":
-                    #Shows CPU Hand (delete later)
-                    player.show()
+                    player.cpu_show()
                     if discard[-1].face == "7":
                         if drew == True:
                             valid = []
