@@ -41,6 +41,32 @@ class Card:
     def show(self):
         return "{}{}".format(self.suit, self.face)
 
+    def current(self):
+        if self.suit == "S":
+            symbol = "♠"
+        elif self.suit == "H":
+            symbol = "♥"
+        elif self.suit == "D":
+            symbol = "♦"
+        else:
+            symbol = "♣"
+
+        s = "              ┌────┐"
+        s += ("\nCurrent Card: |{:<2}{:>2}|").format(symbol, self.face)
+        s += "\n              └────┘"
+
+        print(s)
+    
+    def playability(self, discard):
+        if self.face == "Q" or self.face == "7" or self.face == "A":
+            return True
+        elif discard[-1].suit == self.suit:
+            return True
+        elif discard[-1].face == self.face:
+            return True
+        else:
+            return False
+
 
 
 #When testing, add print statements to functions before return statements
