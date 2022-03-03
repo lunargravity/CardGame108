@@ -33,7 +33,7 @@ if __name__ == "__main__":
     #Show Instructions
     s  = ("+---------------------------------------------------------------+\n")
     s += ("| Instructions:                                                 |\n")
-    s += ("| Type D to draw from the deck.                                 |\n")
+    s += ("| Type D to draw from the deck. Type P to pass.                 |\n")
     s += ("| S for spades, D for diamonds, C for clubs, H for hearts       |\n")
     s += ("| Type the card you want to play. i.e. \"S2\" for 2 of Spades.    |\n")
     s += ("| At the end of the round, points will be counted accordingly.  |\n")
@@ -185,6 +185,7 @@ if __name__ == "__main__":
 
                 #CPU Turns
                 elif player.brain == "CPU":
+                    time.sleep(1)
                     if discard[-1].face == "7":
                         if drew == True:
                             valid = []
@@ -277,7 +278,7 @@ if __name__ == "__main__":
                                     skipped = False
                                 pass
                         else:
-                            print("User draws cards.")
+                            print("{} draws cards.".format(player.name))
                             drew = True
                             print("Drew status is now " + str(drew))
                             #+----------------------------+
@@ -475,20 +476,26 @@ if __name__ == "__main__":
                     else:
                         round_over = False
                         pass
+
+                    #Checking if game over
+                    if len(order) == 1:
+                        game = False
+                    else:
+                        game = True
                         
-                    if round_over == True:
+                    if round_over == True and game == True:
                         print("Round over! " + player.name + " wins this round!")
                         time.sleep(1)
                         
                         for player in order:
                             player.add_points()
                         
-                        p  = ("+---------------------------------------------------------------+\n")
+                        p  = ("+-------------------------------+\n")
                         p += ("| Scores:\n")
                         p += ("| Your Score: {}\n").format(user.score)
                         for player in order[1:]:
                             p += ("| {}'s Score: {} \n").format(player.name, player.score)
-                        p += ("+---------------------------------------------------------------+\n")
+                        p += ("+-------------------------------+\n")
                         print(p)
                         
                         time.sleep(1)
@@ -582,28 +589,37 @@ if __name__ == "__main__":
             time.sleep(1)
 
             s = ""
-            s += ("+---------------------------------------------------------------+\n")
+            s += ("+-----------------------------+\n")
             s += ("| Your hand: {}\n").format(len(user.hand))
             for player in order[1:]:
                 s += ("| {}'s hand: {} \n").format(player.name, len(player.hand))
             s += ("| Cards in the deck: {}\n").format(len(deck))
             s += ("| " + Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + "\n" + Fore.RESET)
-            s += ("+---------------------------------------------------------------+\n")
+            s += ("+------------------------------+\n")
             print(s)
 
             time.sleep(1)
 
-
-
-            #game = False
-            #print("Game over.")
-            #break
-        #else:
-        #    print("Round is over.")
-        #    if total >= 50:
-        #        game = False
-        #        print("Game is over.")
-        #    else:
-        #        pass
-
-
+    while not game:
+        for player in order:
+            print("{name} is the winner!".format(name=player.name))
+        end = input("Would you like to play again? (Y or N)").upper()
+        if end == "Y" or end == "YES":
+            print("New game will begin...")
+            countdown = 3
+            while countdown > 0:
+                print("...in " + str(countdown))
+                time.sleep(1)
+                countdown -= 1
+            os.execl(sys.executable, sys.executable, *sys.argv)
+        elif end == "N" or end == "NO":
+            print("Goodbye! Thanks for playing!")
+            countdown = 3
+            while countdown > 0:
+                print(str(countdown))
+                time.sleep(1)
+                countdown -= 1
+            exit()
+        else:
+            print("Invalid response. Try again.")
+            continue

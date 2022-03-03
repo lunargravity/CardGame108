@@ -46,7 +46,7 @@ class Player:
                 symbol = "♣"
 
             a += "┌────┐"
-            b += ("|{:<2} {}|").format(card.face, symbol)
+            b += ("|{:<2} {}|").format(symbol, card.face)
             c += "└────┘"
 
         print(a)
