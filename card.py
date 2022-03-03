@@ -40,6 +40,22 @@ class Card:
 
     def show(self):
         return "{}{}".format(self.suit, self.face)
+
+    def display(self):
+        if self.suit == "S":
+            symbol = "♠"
+        elif self.suit == "H":
+            symbol = "♥"
+        elif self.suit == "D":
+            symbol = "♦"
+        else:
+            symbol = "♣"
+
+        s = "┌────┐"
+        s += ("\n|{:<2} {:>2}|").format(symbol, card.face)
+        s += "\n└────┘"
+
+        print(s)
     
     def playability(self, discard):
         if self.face == "Q" or self.face == "7" or self.face == "A":
