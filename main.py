@@ -34,7 +34,7 @@ if __name__ == "__main__":
     s  = ("+---------------------------------------------------------------+\n")
     s += ("| Instructions:                                                 |\n")
     s += ("| Type D to draw from the deck. Type P to pass.                 |\n")
-    s += ("| S for spades, D for diamonds, C for clubs, H for hearts       |\n")
+    s += ("| S for spades♠, D for diamonds♦, C for clubs♣, H for hearts♥   |\n")
     s += ("| Type the card you want to play. i.e. \"S2\" for 2 of Spades.    |\n")
     s += ("| At the end of the round, points will be counted accordingly.  |\n")
     s += ("| 2-6 don't count. J are worth 2 and K are worth 4 points.      |\n")
@@ -113,10 +113,19 @@ if __name__ == "__main__":
                                                 break
                                             else:
                                                 print("You have played a QUEEN.")
-                                                suit = input("Choose a suit (S, C, D, H):")
                                                 player.hand.remove(chosen)
                                                 discard.append(chosen)
-                                                discard.append(Card[str(suit), "Q"])
+                                                while True:
+                                                    try:
+                                                        suit = input("Choose a suit (S, C, D, H):").upper()
+                                                        if suit == "S" or suit == "C" or suit == "D" or suit == "H":
+                                                            discard.append(Card(suit, "Q"))
+                                                            break
+                                                        else:
+                                                            print("Invalid suit.")
+                                                    except:
+                                                        print("Invalid input.")
+                                                        continue
                                                 break
                                         elif chosen.face == "7":
                                             if len(player.hand) == 1:
@@ -141,6 +150,7 @@ if __name__ == "__main__":
                                                 player.hand.remove(chosen)
                                                 discard.append(chosen)
                                                 drew = False
+                                                sevens = 1
                                                 break
                                         elif chosen.face == "A":
                                             print("You have played a SKIP.")
@@ -271,6 +281,7 @@ if __name__ == "__main__":
                                     player.hand.remove(choice)
                                     discard.append(choice)
                                     drew = False
+                                    sevens = 1
                                 elif choice.face == "A":
                                     print(player.name + " plays a SKIP. A " + str(choice.show()))
                                     player.hand.remove(choice)
@@ -278,12 +289,26 @@ if __name__ == "__main__":
                                     skipped = False
                                 pass
                         else:
-                            print("{} draws cards.".format(player.name))
-                            drew = True
-                            print("Drew status is now " + str(drew))
-                            #+----------------------------+
-                            player.draw(deck, 3)
-                            #+----------------------------+
+                            #If CPU has a seven when there is a previous seven
+                            cards = []
+                            for card in player.hand:
+                                if card.face == "7":
+                                    cards.append(card)
+                            if len(cards) == 0:
+                                print("{} draws cards.".format(player.name))
+                                drew = True
+                                print("Drew status is now " + str(drew))
+                                draw = sevens * 3 if 1 <= sevens <= 4 else 12
+                                player.draw(deck, draw)
+                                sevens = 0
+                            elif len(cards) >= 1:
+                                ansev = random.choice(cards)
+                                print(player.name + " plays a +3 also. A " + str(ansev.show()))
+                                player.hand.remove(ansev)
+                                discard.append(ansev)
+                                drew = False
+                                sevens += 1
+                            pass
                     elif discard[-1].face == "A":
                         if skipped == True:
                             valid = []
@@ -369,6 +394,7 @@ if __name__ == "__main__":
                                     player.hand.remove(choice)
                                     discard.append(choice)
                                     drew = False
+                                    sevens = 1
                                 elif choice.face == "A":
                                     print(player.name + " plays a SKIP. A " + str(choice.show()))
                                     player.hand.remove(choice)
@@ -376,9 +402,22 @@ if __name__ == "__main__":
                                     skipped = False
                                 pass
                         else:
-                            print("User gets skipped.")
-                            skipped = True
-                            print("Skip status is now " + str(skipped))
+                            #If CPU has an ace when there is a previous ace
+                            aces = []
+                            for card in player.hand:
+                                if card.face == "A":
+                                    aces.append(card)
+                            if len(aces) == 0:
+                                print(player.name + " gets skipped.")
+                                skipped = True
+                                print("Skip status is now " + str(skipped))
+                            else:
+                                anace = random.choice(aces)
+                                print(player.name + " plays a SKIP. A " + str(anace.show()))
+                                player.hand.remove(anace)
+                                discard.append(choice)
+                                skipped = False
+                            pass        
                     else:
                         valid = []
                         special = []
@@ -463,6 +502,7 @@ if __name__ == "__main__":
                                 player.hand.remove(choice)
                                 discard.append(choice)
                                 drew = False
+                                sevens = 1
                             elif choice.face == "A":
                                 print(player.name + " plays a SKIP. A " + str(choice.show()))
                                 player.hand.remove(choice)
@@ -572,12 +612,11 @@ if __name__ == "__main__":
                                 valid = False
                             else:
                                 discard.append(first)
-                                print(Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + Fore.RESET)
                                 valid = True
             
                         #Flags
-                        drew = False
-                        skipped = False
+                        drew = True
+                        skipped = True
                         round_over = False
                     else:
                         pass
