@@ -40,6 +40,16 @@ class Card:
 
     def show(self):
         return "{}{}".format(self.suit, self.face)
+    
+    def playability(self, discard):
+        if self.face == "Q" or self.face == "7" or self.face == "A":
+            return True
+        elif discard[-1].suit == self.suit:
+            return True
+        elif discard[-1].face == self.face:
+            return True
+        else:
+            return False
 
 
 
