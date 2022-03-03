@@ -90,108 +90,186 @@ if __name__ == "__main__":
                 if player.brain == "Human":
                     #Shows Player hand
                     player.show()
-                    print("Type D for Draw, P for Pass or Input a Card(ie. S5 for 5 of Spades).")
-                    while True:
-                        try:
-                            action = input("Action: ").upper()
-                            #Checking to see if the user wishes to play a card
-                            if len(action) > 1:
-                                #Turns the user input into a card object
-                                for card in player.hand:
-                                    if card.show() == action:
-                                        chosen = card
-                                if chosen in player.hand:
-                                    if chosen.playability(discard) == True:
-                                        if chosen.face == "Q":
-                                            if len(player.hand) == 1:
-                                                print("You are ending on a QUEEN.")
-                                                print("Your points will be deducted by 30.")
-                                                time.sleep(1)
-                                                player.score -= 30
-                                                player.hand.remove(chosen)
-                                                discard.append(chosen)
-                                                break
-                                            else:
-                                                print("You have played a QUEEN.")
-                                                player.hand.remove(chosen)
-                                                discard.append(chosen)
-                                                while True:
-                                                    try:
-                                                        suit = input("Choose a suit (S, C, D, H):").upper()
-                                                        if suit == "S" or suit == "C" or suit == "D" or suit == "H":
-                                                            discard.append(Card(suit, "Q"))
-                                                            break
-                                                        else:
-                                                            print("Invalid suit.")
-                                                    except:
-                                                        print("Invalid input.")
-                                                        continue
-                                                break
-                                        elif chosen.face == "7":
-                                            if len(player.hand) == 1:
-                                                print("You cannot end on a 7.")
-                                                print("You will be forced to draw.")
-                                                player.hand.remove(chosen)
-                                                discard.append(chosen)
-                                                if len(deck) < 1:
-                                                    top = discard.pop()
-                                                    deck = buildDeck()
-                                                    deck.shuffle()
-                                                    deck.remove(top)
-                                                    discard.append(top)
-                                                    player.draw(deck)
-                                                else:
-                                                    player.draw(deck)
-                                                new = player.hand[-1]
-                                                print("You have drawn " + new.show() + " from the deck.")
-                                                break
-                                            else:
-                                                print("You have played a +3.")
-                                                player.hand.remove(chosen)
-                                                discard.append(chosen)
-                                                drew = False
-                                                sevens = 1
-                                                break
-                                        elif chosen.face == "A":
-                                            print("You have played a SKIP.")
-                                            player.hand.remove(chosen)
-                                            discard.append(chosen)
-                                            skipped = False
-                                            break
-                                        else:
-                                            #If not special card
-                                            print("You have played " + chosen.show() + ".")
-                                            player.hand.remove(chosen)
-                                            discard.append(chosen)
-                                            break
-                                    else:
-                                        print("You cannot play that card. Try to match the suit or the face.")
-                                else:
-                                    print("You do not have that card. Try again.")
-                                    continue
-                            #User inputs a command, not a card
+                    #There is a special card previously
+                    if discard[-1].face == "7" and drew == False:                        
+                        count = 0
+                        for card in player.hand:
+                            if card.face == "7":
+                                count += 1
                             else:
-                                if action == "D" or action == "DRAW":
-                                    if len(deck) < 1:
-                                        top = discard.pop()
-                                        deck = buildDeck()
-                                        deck.shuffle()
-                                        deck.remove(top)
-                                        discard.append(top)
-                                        player.draw(deck)
-                                    else:
-                                        player.draw(deck)
-                                    new = player.hand[-1]
-                                    print("You have drawn " + new.show() + " from the deck.")
-                                    break
-                                elif action == "P" or action == "PASS":
-                                    break
+                                continue
+                        if count >= 1:
+                            try:
+                                action = input("Pick a seven or type P for pass: ").upper()
+                                if action == "P":                                
+                                    print("You draw cards.")
+                                    drew = True                                
+                                    draw = sevens * 3 if 1 <= sevens <= 3 else 12
+                                    player.draw(deck, draw)
+                                    sevens = 0
+                                    pass
                                 else:
-                                    print("Invalid action. Try D for Draw, P for Pass or try playing one of your cards.")
-                                    continue
-                        except:
-                            print("Invalid. Try D for Draw, P for Pass or try playing one of your cards.")
-                            continue
+                                    for card in player.hand:
+                                        if card.show() == action:
+                                            chosen = card
+                                    if chosen.face == "7":
+                                        print("You have played a +3 also.")
+                                        player.hand.remove(chosen)
+                                        discard.append(chosen)
+                                        drew = False
+                                        sevens += 1
+                                        pass
+                                    else:
+                                        print("Invalid card.")
+                                        continue
+                            except:
+                                print("Something went wrong.")
+                                continue
+                        else:
+                            print("You draw cards.")
+                            drew = True
+                            draw = sevens * 3 if 1 <= sevens <= 3 else 12
+                            player.draw(deck, draw)
+                            sevens = 0
+                            pass
+                    elif discard[-1].face == "A" and skipped == False:
+                        count = 0
+                        for card in player.hand:
+                            if card.face == "A":
+                                count += 1
+                            else:
+                                continue
+                        if count >= 1:
+                            try:
+                                action = input("Pick an ace or type P for pass: ").upper()
+                                if action == "P":                                
+                                    print("You skip.")
+                                    skipped = True
+                                    pass
+                                else:
+                                    for card in player.hand:
+                                        if card.show() == action:
+                                            chosen = card
+                                    if chosen.face == "A":
+                                        print("You have played an ace also.")
+                                        player.hand.remove(chosen)
+                                        discard.append(chosen)
+                                        skipped = False
+                                        pass
+                                    else:
+                                        print("Invalid card.")
+                                        continue
+                            except:
+                                print("Something went wrong.")
+                                continue
+                        else:
+                            print("You are skipped.")
+                            skipped = True
+                            pass
+                    else:
+                        #User can play a card
+                        print("Type D for Draw, P for Pass or Input a Card (ie. S5 for 5 of Spades).")
+                        while True:
+                            try:
+                                action = input("Action: ").upper()
+                                #Checking to see if the user wishes to play a card
+                                if len(action) > 1:
+                                    #Turns the user input into a card object
+                                    for card in player.hand:
+                                        if card.show() == action:
+                                            chosen = card
+                                    if chosen in player.hand:
+                                        if chosen.playability(discard) == True:
+                                            if chosen.face == "Q":
+                                                if len(player.hand) == 1:
+                                                    print("You are ending on a QUEEN.")
+                                                    print("Your points will be deducted by 30.")
+                                                    time.sleep(1)
+                                                    player.score -= 30
+                                                    player.hand.remove(chosen)
+                                                    discard.append(chosen)
+                                                    break
+                                                else:
+                                                    print("You have played a QUEEN.")
+                                                    player.hand.remove(chosen)
+                                                    discard.append(chosen)
+                                                    while True:
+                                                        try:
+                                                            suit = input("Choose a suit (S, C, D, H):").upper()
+                                                            if suit == "S" or suit == "C" or suit == "D" or suit == "H":
+                                                                discard.append(Card(suit, "Q"))
+                                                                break
+                                                            else:
+                                                                print("Invalid suit.")
+                                                        except:
+                                                            print("Invalid input.")
+                                                            continue
+                                                    break
+                                            elif chosen.face == "7":
+                                                if len(player.hand) == 1:
+                                                    print("You cannot end on a 7.")
+                                                    print("You will be forced to draw.")
+                                                    player.hand.remove(chosen)
+                                                    discard.append(chosen)
+                                                    if len(deck) < 1:
+                                                        top = discard.pop()
+                                                        deck = buildDeck()
+                                                        deck.shuffle()
+                                                        deck.remove(top)
+                                                        discard.append(top)
+                                                        player.draw(deck)
+                                                    else:
+                                                        player.draw(deck)
+                                                    new = player.hand[-1]
+                                                    print("You have drawn " + new.show() + " from the deck.")
+                                                    break
+                                                else:
+                                                    print("You have played a +3.")
+                                                    player.hand.remove(chosen)
+                                                    discard.append(chosen)
+                                                    drew = False
+                                                    sevens = 1
+                                                    break
+                                            elif chosen.face == "A":
+                                                print("You have played a SKIP.")
+                                                player.hand.remove(chosen)
+                                                discard.append(chosen)
+                                                skipped = False
+                                                break
+                                            else:
+                                                #If not special card
+                                                print("You have played " + chosen.show() + ".")
+                                                player.hand.remove(chosen)
+                                                discard.append(chosen)
+                                                break
+                                        else:
+                                            print("You cannot play that card. Try to match the suit or the face.")
+                                    else:
+                                        print("You do not have that card. Try again.")
+                                        continue
+                                #User inputs a command, not a card
+                                else:
+                                    if action == "D" or action == "DRAW":
+                                        if len(deck) < 1:
+                                            top = discard.pop()
+                                            deck = buildDeck()
+                                            deck.shuffle()
+                                            deck.remove(top)
+                                            discard.append(top)
+                                            player.draw(deck)
+                                        else:
+                                            player.draw(deck)
+                                        new = player.hand[-1]
+                                        print("You have drawn " + new.show() + " from the deck.")
+                                        break
+                                    elif action == "P" or action == "PASS":
+                                        break
+                                    else:
+                                        print("Invalid action. Try D for Draw, P for Pass or try playing one of your cards.")
+                                        continue
+                            except:
+                                print("Invalid. Try D for Draw, P for Pass or try playing one of your cards.")
+                                continue
 
                 #CPU Turns
                 elif player.brain == "CPU":
@@ -297,8 +375,7 @@ if __name__ == "__main__":
                             if len(cards) == 0:
                                 print("{} draws cards.".format(player.name))
                                 drew = True
-                                print("Drew status is now " + str(drew))
-                                draw = sevens * 3 if 1 <= sevens <= 4 else 12
+                                draw = sevens * 3 if 1 <= sevens <= 3 else 12
                                 player.draw(deck, draw)
                                 sevens = 0
                             elif len(cards) >= 1:
@@ -410,7 +487,6 @@ if __name__ == "__main__":
                             if len(aces) == 0:
                                 print(player.name + " gets skipped.")
                                 skipped = True
-                                print("Skip status is now " + str(skipped))
                             else:
                                 anace = random.choice(aces)
                                 print(player.name + " plays a SKIP. A " + str(anace.show()))
