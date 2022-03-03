@@ -41,7 +41,7 @@ class Card:
     def show(self):
         return "{}{}".format(self.suit, self.face)
 
-    def display(self):
+    def current(self):
         if self.suit == "S":
             symbol = "♠"
         elif self.suit == "H":
@@ -51,9 +51,9 @@ class Card:
         else:
             symbol = "♣"
 
-        s = "┌────┐"
-        s += ("\n|{:<2} {:>2}|").format(symbol, card.face)
-        s += "\n└────┘"
+        s = "              ┌────┐"
+        s += ("\nCurrent Card: |{:<2}{:>2}|").format(symbol, self.face)
+        s += "\n              └────┘"
 
         print(s)
     

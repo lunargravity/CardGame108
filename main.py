@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 valid = False
             else:
                 discard.append(first)
-                print(Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + Fore.RESET)
+                discard[-1].current()
                 valid = True
             
         #Flags
@@ -709,9 +709,10 @@ if __name__ == "__main__":
             for player in order[1:]:
                 s += ("| {}'s hand: {} \n").format(player.name, len(player.hand))
             s += ("| Cards in the deck: {}\n").format(len(deck))
-            s += ("| " + Fore.LIGHTCYAN_EX + "Current Card: " + str(discard[-1].show()) + "\n" + Fore.RESET)
             s += ("+------------------------------+\n")
             print(s)
+
+            discard[-1].current()
 
             time.sleep(1)
 
