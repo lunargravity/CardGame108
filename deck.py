@@ -1,8 +1,5 @@
 #Creating the Cards
-
-import random
-#Deck class
-
+import time
 import random
 from card import Card
 
@@ -37,6 +34,37 @@ class buildDeck:
 
     def __len__(self):
         return len(self.deck)
+    
+def shuffledeck(discard):
+    print("Shuffling a new deck...")
+    top = discard.pop()
+    deck = buildDeck()
+    deck.shuffle()
+    deck.remove(top)
+    discard.append(top)
+    
+    d = "  ┌────┐┐"
+    d += "┌┌────┐||"
+    d += "||    |┘┘"
+    d += "└└────┘"
+
+    e = " ┌────┐"
+    e += "┌────┐|"
+    e += "|    |┘"
+    e += "└────┘"
+
+    f = "┌────┐"
+    f += "┌────┐"
+    f += "|    |"
+    f += "└────┘"
+
+    g = "┌────┐"
+    g += "/n|    |  DONE!"
+    g += "/n└────┘"
+
+    for char in (d, e, f, g):
+        print(char)
+        time.sleep(1)
 
 
 
