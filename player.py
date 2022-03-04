@@ -1,6 +1,6 @@
 #Player Class
 
-from deck import buildDeck
+from deck import *
 from card import Card
 from main import *
 
