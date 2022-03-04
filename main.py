@@ -1,6 +1,6 @@
 #Update 2.0 Main File
 
-from deck import buildDeck
+from deck import *
 from player import *
 import sys
 import os
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     #Show Instructions
     s  = ("+---------------------------------------------------------------+\n")
     s += ("| Instructions:                                                 |\n")
-    s += ("| Type D to draw from the deck. Type P to pass.                 |\n")
+    s += ("| Type D to draw from the deck.                                 |\n")
     s += ("| S for spades♠, D for diamonds♦, C for clubs♣, H for hearts♥   |\n")
     s += ("| Type the card you want to play. i.e. \"S2\" for 2 of Spades.    |\n")
     s += ("| At the end of the round, points will be counted accordingly.  |\n")
@@ -54,9 +54,7 @@ if __name__ == "__main__":
 
     #Main Game Loop
     while game:
-        print("Game is running.")
         round_over = False
-        print("Round starts")
 
         #Shuffle deck
         deck = buildDeck()
@@ -168,7 +166,8 @@ if __name__ == "__main__":
                             pass
                     else:
                         #User can play a card
-                        print("Type D for Draw, P for Pass or Input a Card (ie. S5 for 5 of Spades).")
+                        print("Type D for Draw or Input a Card (ie. S5 for 5 of Spades).")
+                        print("S for spades ♠, D for diamonds ♦, C for clubs ♣, H for hearts ♥")
                         while True:
                             try:
                                 action = input("Action: ").upper()
@@ -212,11 +211,7 @@ if __name__ == "__main__":
                                                     player.hand.remove(chosen)
                                                     discard.append(chosen)
                                                     if len(deck) < 1:
-                                                        top = discard.pop()
-                                                        deck = buildDeck()
-                                                        deck.shuffle()
-                                                        deck.remove(top)
-                                                        discard.append(top)
+                                                        shuffledeck(discard)
                                                         player.draw(deck)
                                                     else:
                                                         player.draw(deck)
@@ -251,24 +246,18 @@ if __name__ == "__main__":
                                 else:
                                     if action == "D" or action == "DRAW":
                                         if len(deck) < 1:
-                                            top = discard.pop()
-                                            deck = buildDeck()
-                                            deck.shuffle()
-                                            deck.remove(top)
-                                            discard.append(top)
+                                            shuffledeck(discard)
                                             player.draw(deck)
                                         else:
                                             player.draw(deck)
                                         new = player.hand[-1]
                                         print("You have drawn " + new.show() + " from the deck.")
                                         break
-                                    elif action == "P" or action == "PASS":
-                                        break
                                     else:
-                                        print("Invalid action. Try D for Draw, P for Pass or try playing one of your cards.")
+                                        print("Invalid action. Try D for Draw or try playing one of your cards.")
                                         continue
                             except:
-                                print("Invalid. Try D for Draw, P for Pass or try playing one of your cards.")
+                                print("Invalid. Try D for Draw or try playing one of your cards.")
                                 continue
 
                 #CPU Turns
@@ -306,11 +295,7 @@ if __name__ == "__main__":
                             if choice == None:
                                 print(player.name + " cannot do anything. So they draw.")
                                 if len(deck) < 1:
-                                    top = discard.pop()
-                                    deck = buildDeck()
-                                    deck.shuffle()
-                                    deck.remove(top)
-                                    discard.append(top)
+                                    shuffledeck(discard)
                                     player.draw(deck)
                                 else:
                                     player.draw(deck)
@@ -345,12 +330,16 @@ if __name__ == "__main__":
                                         choice = random.choice(suits)
                                         discard.append(Card(choice, "Q"))
                                         if choice == "D":
+                                            time.sleep(1)
                                             print(player.name + " has chosen Diamonds.")
                                         elif choice == "H":
+                                            time.sleep(1)
                                             print(player.name + " has chosen Hearts.")
                                         elif choice == "S":
+                                            time.sleep(1)
                                             print(player.name + " has chosen Spades.")
                                         elif choice == "C":
+                                            time.sleep(1)
                                             print(player.name + " has chosen Clubs.")
                                         else:
                                             print("Something went wrong. They chose " + choice)
@@ -418,11 +407,7 @@ if __name__ == "__main__":
                             if choice == None:
                                 print(player.name + " cannot do anything. So they draw.")
                                 if len(deck) < 1:
-                                    top = discard.pop()
-                                    deck = buildDeck()
-                                    deck.shuffle()
-                                    deck.remove(top)
-                                    discard.append(top)
+                                    shuffledeck(discard)
                                     player.draw(deck)
                                 else:
                                     player.draw(deck)
@@ -525,11 +510,7 @@ if __name__ == "__main__":
                         if choice == None:
                             print(player.name + " cannot do anything. So they draw.")
                             if len(deck) < 1:
-                                top = discard.pop()
-                                deck = buildDeck()
-                                deck.shuffle()
-                                deck.remove(top)
-                                discard.append(top)
+                                shuffledeck(discard)
                                 player.draw(deck)
                             else:
                                 player.draw(deck)
@@ -585,6 +566,8 @@ if __name__ == "__main__":
                                 discard.append(choice)
                                 skipped = False
                             pass
+
+                    time.sleep(1)
 
                     #Checking if round over
                     if len(player.hand) < 1:
@@ -689,7 +672,9 @@ if __name__ == "__main__":
                             else:
                                 discard.append(first)
                                 valid = True
-            
+
+                        discard[-1].current()
+
                         #Flags
                         drew = True
                         skipped = True
@@ -708,7 +693,6 @@ if __name__ == "__main__":
             s += ("| Your hand: {}\n").format(len(user.hand))
             for player in order[1:]:
                 s += ("| {}'s hand: {} \n").format(player.name, len(player.hand))
-            s += ("| Cards in the deck: {}\n").format(len(deck))
             s += ("+------------------------------+\n")
             print(s)
 
@@ -739,3 +723,5 @@ if __name__ == "__main__":
         else:
             print("Invalid response. Try again.")
             continue
+
+
