@@ -472,11 +472,11 @@ if __name__ == "__main__":
                             if len(aces) == 0:
                                 print(player.name + " gets skipped.")
                                 skipped = True
-                            else:
+                            elif aces >= 1:
                                 anace = random.choice(aces)
-                                print(player.name + " plays a SKIP. A " + str(anace.show()))
+                                print(player.name + " plays a SKIP also. A " + str(anace.show()))
                                 player.hand.remove(anace)
-                                discard.append(choice)
+                                discard.append(anance)
                                 skipped = False
                             pass        
                     else:
@@ -695,6 +695,8 @@ if __name__ == "__main__":
                 s += ("| {}'s hand: {} \n").format(player.name, len(player.hand))
             s += ("+------------------------------+\n")
             print(s)
+
+            time.sleep(1)
 
             discard[-1].current()
 
