@@ -426,6 +426,7 @@ if __name__ == "__main__":
                                         discard.append(choice)
                                     else:
                                         print(player.name + " plays a QUEEN.")
+                                        time.sleep(1)
                                         player.hand.remove(choice)
                                         discard.append(choice)
                                         suits_in_hand = {}
@@ -472,11 +473,11 @@ if __name__ == "__main__":
                             if len(aces) == 0:
                                 print(player.name + " gets skipped.")
                                 skipped = True
-                            elif aces >= 1:
+                            elif len(aces) >= 1:
                                 anace = random.choice(aces)
                                 print(player.name + " plays a SKIP also. A " + str(anace.show()))
                                 player.hand.remove(anace)
-                                discard.append(anance)
+                                discard.append(anace)
                                 skipped = False
                             pass        
                     else:
