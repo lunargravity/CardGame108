@@ -10,7 +10,7 @@ class buildDeck:
 
     def generate(self):
         for suit in ["S", "C", "D", "H"]:
-            for face in ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]:
+            for face in ["A", "7", "8", "9", "10", "J", "Q", "K"]:
                 self.deck.append(Card(suit, face))
 
     def shuffle(self):
