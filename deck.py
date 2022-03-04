@@ -44,29 +44,29 @@ def shuffledeck(discard):
     discard.append(top)
     
     d = "  ┌────┐┐"
-    d += "┌┌────┐||"
-    d += "||    |┘┘"
-    d += "└└────┘"
+    d += "\n┌┌────┐||"
+    d += "\n||    |┘┘"
+    d += "\n└└────┘"
 
     e = " ┌────┐"
-    e += "┌────┐|"
-    e += "|    |┘"
-    e += "└────┘"
+    e += "\n┌────┐|"
+    e += "\n|    |┘"
+    e += "\n└────┘"
 
     f = "┌────┐"
-    f += "┌────┐"
-    f += "|    |"
-    f += "└────┘"
+    f += "\n┌────┐"
+    f += "\n|    |"
+    f += "\n└────┘"
 
     g = "┌────┐"
-    g += "/n|    |  DONE!"
-    g += "/n└────┘"
+    g += "\n|    |  DONE!"
+    g += "\n└────┘"
 
     for char in (d, e, f, g):
         print(char)
         time.sleep(1)
 
-
+    return deck, discard
 
 #test = buildDeck()
 #test.shuffle()
