@@ -589,12 +589,12 @@ if __name__ == "__main__":
                         for player in order:
                             player.add_points()
                         
-                        p  = ("+-------------------------------+\n")
+                        p  = (Fore.LIGHTYELLOW_EX + "+-------------------------------+\n")
                         p += ("| Scores:\n")
                         p += ("| Your Score: {}\n").format(user.score)
                         for player in order[1:]:
                             p += ("| {}'s Score: {} \n").format(player.name, player.score)
-                        p += ("+-------------------------------+\n")
+                        p += ("+-------------------------------+\n" + Fore.RESET)
                         print(p)
                         
                         time.sleep(1)
