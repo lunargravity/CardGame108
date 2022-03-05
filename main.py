@@ -254,7 +254,12 @@ if __name__ == "__main__":
                                                     player.hand.remove(chosen)
                                                     discard.append(chosen)
                                                     if len(deck) < 1:
-                                                        shuffledeck(discard)
+                                                        shuffledeck()
+                                                        top = discard.pop()
+                                                        deck = buildDeck()
+                                                        deck.shuffle()
+                                                        deck.remove(top)
+                                                        discard.append(top)
                                                         player.draw(deck)
                                                     else:
                                                         player.draw(deck)
@@ -299,7 +304,13 @@ if __name__ == "__main__":
                                 else:
                                     if action == "D" or action == "DRAW":
                                         if len(deck) < 1:
-                                            shuffledeck(discard)
+                                            shuffledeck()
+                                            top = discard.pop()
+                                            deck = buildDeck()
+                                            deck.shuffle()
+                                            deck.remove(top)
+                                            discard.append(top)
+                                            player.draw(deck)
                                             player.draw(deck)
                                         else:
                                             player.draw(deck)
@@ -354,7 +365,13 @@ if __name__ == "__main__":
                                 print(player.name +
                                       " cannot do anything. So they draw.")
                                 if len(deck) < 1:
-                                    shuffledeck(discard)
+                                    shuffledeck()
+                                    top = discard.pop()
+                                    deck = buildDeck()
+                                    deck.shuffle()
+                                    deck.remove(top)
+                                    discard.append(top)
+                                    player.draw(deck)
                                     player.draw(deck)
                                 else:
                                     player.draw(deck)
@@ -481,7 +498,13 @@ if __name__ == "__main__":
                                 print(player.name +
                                       " cannot do anything. So they draw.")
                                 if len(deck) < 1:
-                                    shuffledeck(discard)
+                                    shuffledeck()
+                                    top = discard.pop()
+                                    deck = buildDeck()
+                                    deck.shuffle()
+                                    deck.remove(top)
+                                    discard.append(top)
+                                    player.draw(deck)
                                     player.draw(deck)
                                 else:
                                     player.draw(deck)
@@ -600,7 +623,13 @@ if __name__ == "__main__":
                             print(player.name +
                                   " cannot do anything. So they draw.")
                             if len(deck) < 1:
-                                shuffledeck(discard)
+                                shuffledeck()
+                                top = discard.pop()
+                                deck = buildDeck()
+                                deck.shuffle()
+                                deck.remove(top)
+                                discard.append(top)
+                                player.draw(deck)
                                 player.draw(deck)
                             else:
                                 player.draw(deck)

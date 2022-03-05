@@ -35,13 +35,8 @@ class buildDeck:
     def __len__(self):
         return len(self.deck)
     
-def shuffledeck(discard):
+def shuffledeck():
     print("Shuffling a new deck...")
-    top = discard.pop()
-    deck = buildDeck()
-    deck.shuffle()
-    deck.remove(top)
-    discard.append(top)
     
     d = "  ┌────┐┐"
     d += "\n┌┌────┐||"
@@ -65,8 +60,6 @@ def shuffledeck(discard):
     for char in (d, e, f, g):
         print(char)
         time.sleep(1)
-
-    return deck, discard
 
 #test = buildDeck()
 #test.shuffle()
