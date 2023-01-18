@@ -66,27 +66,3 @@ class Card:
             return True
         else:
             return False
-
-
-
-#When testing, add print statements to functions before return statements
-
-#test = Card("S", "2")
-#test.show()
-#test.check_ability()
-#test.check_points()
-
-#test2 = Card("D", "J")
-#test2.show()
-#test2.check_ability()
-#test2.check_points()
-
-#test2 = Card("D", "K")
-#test2.show()
-#test2.check_ability()
-#test2.check_points()
-
-#test2 = Card("D", "8")
-#test2.show()
-#test2.check_ability()
-#test2.check_points()

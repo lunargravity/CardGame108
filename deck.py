@@ -61,9 +61,3 @@ def shuffledeck():
         print(char)
         time.sleep(1)
 
-#test = buildDeck()
-#test.shuffle()
-#print(len(test))
-#testcard = Card("S", "2")
-#test.remove(testcard)
-#print(len(test))
